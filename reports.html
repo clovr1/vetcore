@@ -83,26 +83,7 @@
         </div>
 
         <!-- Navigation Menu -->
-        <nav class="px-3 py-4 space-y-1 overflow-y-auto flex-1">
-            <a href="index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
-                <i data-lucide="layout-grid" class="w-4 h-4 shrink-0"></i> Overview Utama
-            </a>
-            <a href="doctor_dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
-                <i data-lucide="stethoscope" class="w-4 h-4 shrink-0"></i> Portal Dokter
-            </a>
-            <a href="patients.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
-                <i data-lucide="paw-print" class="w-4 h-4 shrink-0"></i> Daftar Pasien
-            </a>
-            <a href="prescriptions.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
-                <i data-lucide="pill" class="w-4 h-4 shrink-0"></i> E-Prescriptions
-            </a>
-            <a href="reports.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-active transition-all">
-                <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i> Laporan & Rekam
-            </a>
-            <a href="profile.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
-                <i data-lucide="user" class="w-4 h-4 shrink-0"></i> Profil Saya
-            </a>
-        </nav>
+        <nav id="sidebarNav" class="px-3 py-4 space-y-1 overflow-y-auto flex-1"></nav>
 
         <!-- Bottom User Card -->
         <div class="p-3 border-t border-slate-200/80 bg-slate-50/50">
@@ -403,6 +384,11 @@
                 dateInput.value = new Date().toISOString().split('T')[0];
             }
         });
+    </script>
+    <script type="module">
+        import { renderSidebar } from '/src/auth.ts';
+        renderSidebar('reports.html');
+        lucide.createIcons();
     </script>
 </body>
 </html>

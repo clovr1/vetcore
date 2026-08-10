@@ -110,3 +110,39 @@ export function initSidebarProfile() {
   if (headerUserName) headerUserName.textContent = user.name;
   if (headerUserRole) headerUserRole.textContent = user.role === 'doctor' ? 'Dokter Praktik' : 'Front Office';
 }
+
+export function renderSidebar(currentPage: string = '') {
+  const user = getCurrentUser();
+  const nav = document.getElementById('sidebarNav');
+  if (!nav) return;
+
+  const menuItems = user.role === 'doctor'
+    ? [
+        { href: 'index.html', icon: 'layout-grid', label: 'Overview Utama' },
+        { href: 'doctor_dashboard.html', icon: 'stethoscope', label: 'Portal Dokter' },
+        { href: 'patients.html', icon: 'paw-print', label: 'Daftar Pasien' },
+        { href: 'prescriptions.html', icon: 'pill', label: 'E-Prescriptions' },
+        { href: 'reports.html', icon: 'file-text', label: 'Laporan & Rekam' },
+        { href: 'profile.html', icon: 'user', label: 'Profil Saya' },
+      ]
+    : [
+        { href: 'index.html', icon: 'layout-grid', label: 'Overview Utama' },
+        { href: 'patients.html', icon: 'paw-print', label: 'Daftar Pasien' },
+        { href: 'add_patient.html', icon: 'user-plus', label: 'Tambah Pasien' },
+        { href: 'prescriptions.html', icon: 'pill', label: 'E-Prescriptions' },
+        { href: 'reports.html', icon: 'file-text', label: 'Laporan & Rekam' },
+        { href: 'profile.html', icon: 'user', label: 'Profil Saya' },
+      ];
+
+  nav.innerHTML = menuItems.map(item => {
+    const isActive = currentPage && item.href === currentPage;
+    const activeClass = isActive ? 'sidebar-item-active' : 'sidebar-item-inactive';
+    return `
+      <a href="${item.href}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs ${activeClass} transition-all">
+        <i data-lucide="${item.icon}" class="w-4 h-4 shrink-0"></i> ${item.label}
+      </a>
+    `;
+  }).join('');
+
+  if ((window as any).lucide) (window as any).lucide.createIcons();
+}
