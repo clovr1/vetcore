@@ -34,38 +34,8 @@
     </script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/src/design-system.css">
     <style>
-        body {
-            background-color: #F8FAFC;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #1E293B;
-        }
-        .serif-title {
-            font-family: 'Lora', serif;
-        }
-        .btn-vet-primary {
-            background-color: #044e3a;
-            color: #ffffff;
-            transition: all 0.2s ease;
-        }
-        .btn-vet-primary:hover {
-            background-color: #033b2c;
-            box-shadow: 0 4px 12px rgba(4, 78, 58, 0.25);
-        }
-        .sidebar-item-active {
-            background-color: #ECFDF5;
-            color: #065F46;
-            border: 1px solid #A7F3D0;
-            font-weight: 700;
-        }
-        .sidebar-item-inactive {
-            color: #475569;
-            font-weight: 500;
-        }
-        .sidebar-item-inactive:hover {
-            background-color: #F8FAFC;
-            color: #0F172A;
-        }
         @media print {
             body * {
                 visibility: hidden;
@@ -88,9 +58,9 @@
 <body class="min-h-screen flex text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-950">
 
     <!-- Sidebar Navigation -->
-    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 min-h-screen sticky top-0 h-screen">
+    <aside class="sidebar">
         <!-- Brand Header -->
-        <div class="px-5 pt-5 pb-4 border-b border-slate-100">
+        <div class="sidebar-brand">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-slate-900 text-white flex items-center justify-center shadow-xs shrink-0">
                     <i data-lucide="stethoscope" class="w-5 h-5 text-emerald-300"></i>
@@ -103,10 +73,10 @@
         </div>
 
         <!-- Navigation Menu -->
-        <nav id="sidebarNav" class="px-3 py-4 space-y-1 overflow-y-auto flex-1"></nav>
+        <nav id="sidebarNav" class="sidebar-nav"></nav>
 
         <!-- Bottom User Card -->
-        <div class="p-3 border-t border-slate-200/80 bg-slate-50/50">
+        <div class="sidebar-footer">
             <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
                 <a href="profile.html" id="sidebarProfileLink" class="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
                     <div id="sidebarAvatar" class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
@@ -138,14 +108,14 @@
                     <h1 class="serif-title text-2xl font-bold text-slate-900">E-Prescription & Farmasi</h1>
                     <p class="text-xs text-slate-500 mt-1">Kelola dan terbitkan resep obat digital pasien hewan klinik secara aman & teratur.</p>
                 </div>
-                <button id="openNewPrescriptionBtn" class="btn-vet-primary px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs shrink-0">
+                <button id="openNewPrescriptionBtn" class="btn btn-primary flex items-center justify-center gap-2 shrink-0">
                     <i data-lucide="plus-circle" class="w-4 h-4"></i> Buat Resep Baru
                 </button>
             </div>
 
             <!-- Stats Overview Row -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex items-center gap-4">
+                <div class="card p-5 flex items-center gap-4">
                     <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-vetgreen-800 shrink-0">
                         <i data-lucide="pill" class="w-6 h-6"></i>
                     </div>
@@ -155,7 +125,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex items-center gap-4">
+                <div class="card p-5 flex items-center gap-4">
                     <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-700 shrink-0">
                         <i data-lucide="check-circle-2" class="w-6 h-6"></i>
                     </div>
@@ -165,7 +135,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex items-center gap-4">
+                <div class="card p-5 flex items-center gap-4">
                     <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-700 shrink-0">
                         <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
                     </div>
@@ -177,7 +147,7 @@
             </div>
 
             <!-- Filter & Search Controls -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="card p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div class="relative w-full sm:w-96">
                     <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     <input type="text" id="searchPrescriptionInput" placeholder="Cari resep (Nama Pasien, No. RX, Obat, Pemilik)..." 
@@ -186,7 +156,7 @@
 
                 <div class="flex items-center gap-2 w-full sm:w-auto">
                     <span class="text-xs text-slate-500 font-medium whitespace-nowrap">Filter Status:</span>
-                    <select id="filterStatusSelect" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:border-vetgreen-800 focus:bg-white transition-all">
+                    <select id="filterStatusSelect" class="input-field w-auto font-semibold transition-all">
                         <option value="All">Semua Status</option>
                         <option value="Active">Active (Berjalan)</option>
                         <option value="Selesai">Selesai</option>
@@ -207,7 +177,7 @@
 
     <!-- Modal Buat Resep Baru -->
     <div id="newPrescriptionModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+        <div class="card max-w-2xl w-full p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div>
                     <h3 class="serif-title font-bold text-slate-900 text-base">Buat E-Resep Obat Baru</h3>
@@ -220,14 +190,14 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="font-semibold text-slate-700 block mb-1">Pasien (Pilih Hewan) *</label>
-                        <select id="rxPatientSelect" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                        <select id="rxPatientSelect" required class="input-field">
                             <option value="" disabled selected>-- Pilih Pasien --</option>
                         </select>
                     </div>
 
                     <div>
                         <label class="font-semibold text-slate-700 block mb-1">Dokter Pemeriksa *</label>
-                        <select id="rxDoctorSelect" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                        <select id="rxDoctorSelect" required class="input-field">
                             <option value="" disabled selected>-- Pilih Dokter --</option>
                             <option value="Dr. Sarah Jenkins">Dr. Sarah Jenkins (Lead Vet)</option>
                             <option value="Dr. Michael Lee">Dr. Michael Lee (Vet Surgeon)</option>
@@ -237,12 +207,12 @@
 
                     <div>
                         <label class="font-semibold text-slate-700 block mb-1">Nomor Resep (Rx Number)</label>
-                        <input type="text" id="rxNumberInput" placeholder="e.g. RX-2025-003" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                        <input type="text" id="rxNumberInput" placeholder="e.g. RX-2025-003" class="input-field">
                     </div>
 
                     <div>
                         <label class="font-semibold text-slate-700 block mb-1">Durasi Pengobatan *</label>
-                        <select id="rxDurationSelect" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                        <select id="rxDurationSelect" required class="input-field">
                             <option value="" disabled selected>-- Pilih Durasi Pengobatan --</option>
                             <option value="3 Hari">3 Hari</option>
                             <option value="5 Hari">5 Hari</option>
@@ -275,8 +245,8 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
-                    <button type="button" id="cancelRxModalBtn" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50">Batal</button>
-                    <button type="submit" id="saveRxBtn" class="btn-vet-primary px-5 py-2 rounded-xl text-xs font-bold shadow-xs flex items-center gap-1.5">
+                    <button type="button" id="cancelRxModalBtn" class="btn btn-secondary">Batal</button>
+                    <button type="submit" id="saveRxBtn" class="btn btn-primary flex items-center gap-1.5">
                         <i data-lucide="check" class="w-4 h-4"></i> Simpan & Terbitkan Resep
                     </button>
                 </div>
@@ -286,11 +256,11 @@
 
     <!-- Modal View / Print Printable E-Prescription -->
     <div id="viewRxModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white border border-slate-200 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="card max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3 no-print">
                 <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Preview Resep Digital</span>
                 <div class="flex items-center gap-2">
-                    <button id="printRxBtn" class="btn-vet-primary px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5">
+                    <button id="printRxBtn" class="btn btn-primary flex items-center gap-1.5">
                         <i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak Resep
                     </button>
                     <button id="closeViewRxModalX" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -298,7 +268,7 @@
             </div>
 
             <!-- Printable Rx Area -->
-            <div id="printablePrescriptionArea" class="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 text-xs text-slate-800">
+            <div id="printablePrescriptionArea" class="card p-6 space-y-4 text-xs text-slate-800">
                 <!-- Clinic Header -->
                 <div class="flex items-start justify-between border-b-2 border-slate-800 pb-4">
                     <div>

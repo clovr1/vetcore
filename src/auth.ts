@@ -116,33 +116,39 @@ export function renderSidebar(currentPage: string = '') {
   const nav = document.getElementById('sidebarNav');
   if (!nav) return;
 
-  const menuItems = user.role === 'doctor'
-    ? [
-        { href: 'index.html', icon: 'layout-grid', label: 'Overview Utama' },
-        { href: 'doctor_dashboard.html', icon: 'stethoscope', label: 'Portal Dokter' },
-        { href: 'patients.html', icon: 'paw-print', label: 'Daftar Pasien' },
-        { href: 'prescriptions.html', icon: 'pill', label: 'E-Prescriptions' },
-        { href: 'reports.html', icon: 'file-text', label: 'Laporan & Rekam' },
-        { href: 'profile.html', icon: 'user', label: 'Profil Saya' },
-      ]
-    : [
-        { href: 'index.html', icon: 'layout-grid', label: 'Overview Utama' },
-        { href: 'patients.html', icon: 'paw-print', label: 'Daftar Pasien' },
-        { href: 'add_patient.html', icon: 'user-plus', label: 'Tambah Pasien' },
-        { href: 'prescriptions.html', icon: 'pill', label: 'E-Prescriptions' },
-        { href: 'reports.html', icon: 'file-text', label: 'Laporan & Rekam' },
-        { href: 'profile.html', icon: 'user', label: 'Profil Saya' },
-      ];
-
-  nav.innerHTML = menuItems.map(item => {
+  const buildItem = (item: { href: string; icon: string; label: string }) => {
     const isActive = currentPage && item.href === currentPage;
     const activeClass = isActive ? 'sidebar-item-active' : 'sidebar-item-inactive';
     return `
-      <a href="${item.href}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs ${activeClass} transition-all">
-        <i data-lucide="${item.icon}" class="w-4 h-4 shrink-0"></i> ${item.label}
+      <a href="${item.href}" class="sidebar-item ${activeClass}">
+        <i data-lucide="${item.icon}"></i>
+        <span class="truncate">${item.label}</span>
       </a>
     `;
-  }).join('');
+  };
+
+  const doctorMenu = `
+    <span class="sidebar-section-label">Menu Utama</span>
+    ${buildItem({ href: 'index.html', icon: 'layout-grid', label: 'Overview Utama' })}
+    ${buildItem({ href: 'doctor_dashboard.html', icon: 'stethoscope', label: 'Portal Dokter' })}
+    ${buildItem({ href: 'patients.html', icon: 'paw-print', label: 'Daftar Pasien' })}
+    <span class="sidebar-section-label">Alat Klinis</span>
+    ${buildItem({ href: 'prescriptions.html', icon: 'pill', label: 'E-Prescriptions' })}
+    ${buildItem({ href: 'reports.html', icon: 'file-text', label: 'Laporan & Rekam' })}
+    <span class="sidebar-section-label">Akun</span>
+    ${buildItem({ href: 'profile.html', icon: 'user', label: 'Profil Saya' })}
+  `;
+
+  const frontOfficeMenu = `
+    <span class="sidebar-section-label">Menu Utama</span>
+    ${buildItem({ href: 'index.html', icon: 'layout-grid', label: 'Overview Utama' })}
+    ${buildItem({ href: 'patients.html', icon: 'paw-print', label: 'Daftar Pasien' })}
+    ${buildItem({ href: 'reports.html', icon: 'file-text', label: 'Laporan & Rekam' })}
+    <span class="sidebar-section-label">Akun</span>
+    ${buildItem({ href: 'profile.html', icon: 'user', label: 'Profil Saya' })}
+  `;
+
+  nav.innerHTML = user.role === 'doctor' ? doctorMenu : frontOfficeMenu;
 
   if ((window as any).lucide) (window as any).lucide.createIcons();
 }

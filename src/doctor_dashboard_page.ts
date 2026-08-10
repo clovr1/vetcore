@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <td class="px-5 py-3.5 font-bold text-sm text-slate-900">${escapeHtml(p.name)} <span class="text-xs text-slate-500 font-normal">(${escapeHtml(p.species)})</span></td>
             <td class="px-5 py-3.5 text-xs text-slate-700">${escapeHtml(p.owner_name)}</td>
             <td class="px-5 py-3.5 text-xs">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-bold text-[10px] bg-amber-100 text-amber-800 border border-amber-200">
+              <span class="badge badge-amber">
                 ${escapeHtml(p.status)}
               </span>
             </td>

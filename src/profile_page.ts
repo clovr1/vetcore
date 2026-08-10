@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (roleBadgeElem) {
       if (user.role === 'doctor') {
-        roleBadgeElem.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+        roleBadgeElem.className = 'badge badge-emerald';
         roleBadgeElem.innerHTML = '<span>👨‍⚕️</span> <span>Dokter Hewan Praktik (Vet Specialist)</span>';
       } else {
-        roleBadgeElem.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-300';
+        roleBadgeElem.className = 'badge badge-blue';
         roleBadgeElem.innerHTML = '<span>📋</span> <span>Front Office & Patient Admission</span>';
       }
     }

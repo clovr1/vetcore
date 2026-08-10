@@ -234,11 +234,11 @@ function setupRealtimeSubscriptions(patientId: string) {
         const sev = sevMatch[1];
         titleText = titleText.replace(/\[(Mild|Moderate|Severe)\]/i, '').trim();
         if (sev.toLowerCase() === 'mild') {
-          severityBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Mild</span>`;
+          severityBadge = `<span class="badge badge-emerald">Mild</span>`;
         } else if (sev.toLowerCase() === 'moderate') {
-          severityBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">Moderate</span>`;
+          severityBadge = `<span class="badge badge-amber">Moderate</span>`;
         } else {
-          severityBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">Severe</span>`;
+          severityBadge = `<span class="badge badge-rose">Severe</span>`;
         }
       }
 
@@ -509,11 +509,11 @@ function renderPatientVaccinations(vacs: Vaccination[]) {
   }
 
   tbody.innerHTML = vacs.map(v => {
-    let badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+    let badgeClass = 'badge-emerald';
     if (v.status === 'Sebentar Lagi') {
-      badgeClass = 'bg-amber-100 text-amber-800 border-amber-200';
+      badgeClass = 'badge-amber';
     } else if (v.status === 'Perlu Booster') {
-      badgeClass = 'bg-rose-100 text-rose-800 border-rose-200';
+      badgeClass = 'badge-rose';
     }
 
     return `
@@ -525,7 +525,7 @@ function renderPatientVaccinations(vacs: Vaccination[]) {
         <td class="p-3 text-slate-700 whitespace-nowrap">${escapeHtml(v.given_date || '-')}</td>
         <td class="p-3 font-semibold text-emerald-700 whitespace-nowrap">${escapeHtml(v.due_date || '-')}</td>
         <td class="p-3 whitespace-nowrap">
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border whitespace-nowrap ${badgeClass}">
+          <span class="badge whitespace-nowrap ${badgeClass}">
             ${escapeHtml(v.status || 'Up to Date')}
           </span>
         </td>
@@ -655,13 +655,13 @@ function renderPatientPrescriptions(rxs: Prescription[]) {
 
     const statusBadgeClass = 
       rx.status === 'Active' 
-        ? 'bg-emerald-100 text-emerald-800 border-emerald-200' 
+        ? 'badge-emerald' 
         : rx.status === 'Selesai'
-        ? 'bg-slate-100 text-slate-700 border-slate-200'
-        : 'bg-rose-100 text-rose-800 border-rose-200';
+        ? 'badge-slate'
+        : 'badge-rose';
 
     return `
-      <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-xs space-y-3">
+      <div class="card p-4 space-y-3">
         <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-2">
           <div>
             <div class="flex items-center gap-2">
@@ -670,7 +670,7 @@ function renderPatientPrescriptions(rxs: Prescription[]) {
             </div>
             <span class="text-xs text-slate-500 block mt-0.5">Dokter: ${escapeHtml(rx.doctor_name || 'Dr. Sarah Jenkins')} &middot; Durasi: ${escapeHtml(rx.duration || '7 Hari')}</span>
           </div>
-          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${statusBadgeClass}">
+          <span class="badge whitespace-nowrap ${statusBadgeClass}">
             ${escapeHtml(rx.status || 'Active')}
           </span>
         </div>
@@ -743,15 +743,15 @@ function addPatientRxItemRow(defaultName = '', defaultDosage = '', defaultInstru
   div.innerHTML = `
     <div class="col-span-5">
       <input type="text" placeholder="Nama Obat *" required value="${defaultName}" 
-             class="prx-med-name w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800">
+             class="input-field prx-med-name">
     </div>
     <div class="col-span-3">
       <input type="text" placeholder="Dosis" required value="${defaultDosage}" 
-             class="prx-med-dosage w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800">
+             class="input-field prx-med-dosage">
     </div>
     <div class="col-span-3">
       <input type="text" placeholder="Instruksi" value="${defaultInstructions}" 
-             class="prx-med-instructions w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800">
+             class="input-field prx-med-instructions">
     </div>
     <div class="col-span-1 text-right">
       <button type="button" onclick="removePatientRxRow('${rowId}')" class="text-slate-400 hover:text-rose-600">✕</button>

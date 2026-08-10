@@ -34,24 +34,8 @@
     </script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/src/design-system.css">
     <style>
-        body {
-            background-color: #F8FAFC;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #1E293B;
-        }
-        .serif-title {
-            font-family: 'Lora', serif;
-        }
-        .btn-vet-primary {
-            background-color: #044e3a;
-            color: #ffffff;
-            transition: all 0.2s ease;
-        }
-        .btn-vet-primary:hover {
-            background-color: #033b2c;
-            box-shadow: 0 4px 12px rgba(4, 78, 58, 0.25);
-        }
         .custom-badge-perawatan {
             background-color: #EBF3F0;
             color: #2D5A4D;
@@ -62,28 +46,14 @@
             color: #A05E2B;
             border: 1px solid #F5E0D0;
         }
-        .sidebar-item-active {
-            background-color: #ECFDF5;
-            color: #065F46;
-            border: 1px solid #A7F3D0;
-            font-weight: 700;
-        }
-        .sidebar-item-inactive {
-            color: #475569;
-            font-weight: 500;
-        }
-        .sidebar-item-inactive:hover {
-            background-color: #F8FAFC;
-            color: #0F172A;
-        }
     </style>
 </head>
 <body class="min-h-screen flex text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-950">
 
     <!-- Sidebar Navigation -->
-    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 min-h-screen sticky top-0 h-screen">
+    <aside class="sidebar">
         <!-- Brand Header -->
-        <div class="px-5 pt-5 pb-4 border-b border-slate-100">
+        <div class="sidebar-brand">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-slate-900 text-white flex items-center justify-center shadow-xs shrink-0">
                     <i data-lucide="stethoscope" class="w-5 h-5 text-emerald-300"></i>
@@ -96,10 +66,10 @@
         </div>
 
         <!-- Navigation Menu -->
-        <nav id="sidebarNav" class="px-3 py-4 space-y-1 overflow-y-auto flex-1"></nav>
+        <nav id="sidebarNav" class="sidebar-nav"></nav>
 
         <!-- Bottom User Card -->
-        <div class="p-3 border-t border-slate-200/80 bg-slate-50/50">
+        <div class="sidebar-footer">
             <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
                 <a href="profile.html" id="sidebarProfileLink" class="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
                     <div id="sidebarAvatar" class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
@@ -173,7 +143,7 @@
             </div>
 
             <!-- Patient Profile Banner (Matching Screen 4) -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div class="card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div class="flex items-center gap-5">
                     <!-- Photo Avatar Badge -->
                     <div id="patientAvatar" class="w-20 h-20 rounded-2xl bg-vetgreen-800 text-white font-bold text-2xl flex items-center justify-center shadow-md shrink-0">
@@ -208,7 +178,7 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <button onclick="openRevisitModal()" class="btn-vet-primary px-4 py-2.5 rounded-xl text-xs font-bold shadow-xs flex items-center gap-1.5 whitespace-nowrap">
+                    <button onclick="openRevisitModal()" class="btn btn-primary flex items-center gap-1.5 whitespace-nowrap">
                         <i data-lucide="calendar-plus" class="w-4 h-4"></i> + Catat Kunjungan Ulang
                     </button>
                 </div>
@@ -236,7 +206,7 @@
                     <!-- TAB 1: Medical History Pane -->
                     <div id="tabContentMedicalHistory" class="space-y-6">
                         <!-- Clinical Timeline Card -->
-                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                        <div class="card p-6 space-y-4">
                             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                                 <h2 class="serif-title font-bold text-base text-slate-900">Clinical Timeline</h2>
                                 <span class="text-xs text-slate-400">Chronological</span>
@@ -248,13 +218,13 @@
                         </div>
 
                         <!-- Owner Details Card -->
-                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                        <div class="card p-6 space-y-4">
                             <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                                 <div>
                                     <h2 class="serif-title font-bold text-sm text-slate-900">Owner Information & Contact</h2>
                                     <p class="text-[11px] text-slate-500">Data pemilik terdaftar di klinik.</p>
                                 </div>
-                                <a id="addOtherPetLink" href="add_patient.html" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-1">
+                                <a id="addOtherPetLink" href="add_patient.html" class="btn btn-secondary flex items-center gap-1">
                                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> + Hewan Baru Pemilik Ini
                                 </a>
                             </div>
@@ -286,13 +256,13 @@
 
                     <!-- TAB 2: Prescriptions Pane -->
                     <div id="tabContentPrescriptions" class="space-y-4 hidden">
-                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                        <div class="card p-6 space-y-4">
                             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                                 <div>
                                     <h2 class="serif-title font-bold text-base text-slate-900">E-Prescriptions & Racikan Obat</h2>
                                     <p class="text-xs text-slate-500">Daftar resep obat digital yang diterbitkan untuk pasien ini.</p>
                                 </div>
-                                <button onclick="openPatientRxModal()" class="btn-vet-primary px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-xs">
+                                <button onclick="openPatientRxModal()" class="btn btn-primary flex items-center gap-1.5">
                                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> Buat Resep Obat
                                 </button>
                             </div>
@@ -305,13 +275,13 @@
 
                     <!-- TAB 3: Vaccinations Pane -->
                     <div id="tabContentVaccinations" class="space-y-4 hidden">
-                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                        <div class="card p-6 space-y-4">
                             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                                 <div>
                                     <h2 class="serif-title font-bold text-base text-slate-900">Vaccination & Deworming Record</h2>
                                     <p class="text-xs text-slate-500">Riwayat vaksinasi dan pencegahan parasit berkala.</p>
                                 </div>
-                                <button onclick="openAddVaccineModal()" class="px-3.5 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-1">
+                                <button onclick="openAddVaccineModal()" class="btn btn-secondary flex items-center gap-1">
                                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> Catat Vaksin
                                 </button>
                             </div>
@@ -342,7 +312,7 @@
                 <div class="space-y-6">
 
                     <!-- Latest Vital Signs Card -->
-                    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-3">
+                    <div class="card p-6 space-y-3">
                         <div class="flex items-center justify-between">
                             <h2 class="serif-title font-bold text-sm text-slate-900">Latest Vital Signs</h2>
                         </div>
@@ -363,7 +333,7 @@
                     </div>
 
                     <!-- Active Medications Card -->
-                    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-3">
+                    <div class="card p-6 space-y-3">
                         <div class="flex items-center justify-between">
                             <h2 class="serif-title font-bold text-sm text-slate-900">Active Medications</h2>
                         </div>
@@ -382,7 +352,7 @@
 
     <!-- Modal Buat Resep Baru (In-Patient Detail Page) -->
     <div id="newPatientRxModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white border border-slate-200 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+        <div class="card max-w-xl w-full p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div>
                     <h3 class="serif-title font-bold text-slate-900 text-base">Buat E-Resep Obat Pasien</h3>
@@ -395,7 +365,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="font-semibold text-slate-700 block mb-1">Dokter Pemeriksa *</label>
-                        <select id="patientRxDoctorSelect" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                        <select id="patientRxDoctorSelect" required class="input-field">
                             <option value="" disabled selected>-- Pilih Dokter --</option>
                             <option value="Dr. Sarah Jenkins">Dr. Sarah Jenkins (Lead Vet)</option>
                             <option value="Dr. Michael Lee">Dr. Michael Lee (Vet Surgeon)</option>
@@ -405,12 +375,12 @@
 
                     <div>
                         <label class="font-semibold text-slate-700 block mb-1">Nomor Resep (Rx Number)</label>
-                        <input type="text" id="patientRxNumberInput" placeholder="e.g. RX-2025-001" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                        <input type="text" id="patientRxNumberInput" placeholder="e.g. RX-2025-001" class="input-field">
                     </div>
 
                     <div class="sm:col-span-2">
                         <label class="font-semibold text-slate-700 block mb-1">Durasi Pengobatan *</label>
-                        <select id="patientRxDurationSelect" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                        <select id="patientRxDurationSelect" required class="input-field">
                             <option value="" disabled selected>-- Pilih Durasi Pengobatan --</option>
                             <option value="3 Hari">3 Hari</option>
                             <option value="5 Hari">5 Hari</option>
@@ -443,8 +413,8 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
-                    <button type="button" onclick="closePatientRxModal()" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50">Batal</button>
-                    <button type="submit" id="savePatientRxBtn" class="btn-vet-primary px-5 py-2 rounded-xl text-xs font-bold shadow-xs flex items-center gap-1.5">
+                    <button type="button" onclick="closePatientRxModal()" class="btn btn-secondary">Batal</button>
+                    <button type="submit" id="savePatientRxBtn" class="btn btn-primary flex items-center gap-1.5">
                         <i data-lucide="check" class="w-4 h-4"></i> Simpan & Terbitkan Resep
                     </button>
                 </div>
@@ -454,11 +424,11 @@
 
     <!-- Modal View / Print Printable E-Prescription -->
     <div id="viewRxModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white border border-slate-200 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="card max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3 no-print">
                 <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Preview Resep Digital</span>
                 <div class="flex items-center gap-2">
-                    <button onclick="window.print()" class="btn-vet-primary px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5">
+                    <button onclick="window.print()" class="btn btn-primary flex items-center gap-1.5">
                         <i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak Resep
                     </button>
                     <button onclick="document.getElementById('viewRxModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -466,7 +436,7 @@
             </div>
 
             <!-- Printable Rx Area -->
-            <div id="printablePrescriptionArea" class="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 text-xs text-slate-800">
+            <div id="printablePrescriptionArea" class="card p-6 space-y-4 text-xs text-slate-800">
                 <!-- Clinic Header -->
                 <div class="flex items-start justify-between border-b-2 border-slate-800 pb-4">
                     <div>
@@ -541,7 +511,7 @@
 
     <!-- Modal Add Vaccine Record -->
     <div id="addVaccineModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <div class="card max-w-md w-full p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
@@ -558,7 +528,7 @@
             <form id="addVaccineForm" class="space-y-3.5 text-xs">
                 <div>
                     <label class="font-semibold text-slate-700 block mb-1">Pilihan Jenis Vaksin / Obat *</label>
-                    <select id="vacTypeSelect" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                    <select id="vacTypeSelect" required class="input-field">
                         <option value="" disabled selected>-- Pilih Jenis Vaksin / Anti-Parasit --</option>
                         <option value="Vaksin Core Rabies">Vaksin Core Rabies (Rabies Vaccine)</option>
                         <option value="Vaksin Tricat Trio (FVRCP)">Vaksin Tricat Trio (FVRCP - Kucing)</option>
@@ -575,12 +545,12 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="font-semibold text-slate-700 block mb-1">Tanggal Vaksin *</label>
-                        <input type="date" id="vacGivenDateInput" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                        <input type="date" id="vacGivenDateInput" required class="input-field">
                     </div>
 
                     <div>
                         <label class="font-semibold text-slate-700 block mb-1">Interval Booster *</label>
-                        <select id="vacIntervalSelect" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                        <select id="vacIntervalSelect" required class="input-field">
                             <option value="12">1 Tahun (Vaksin Rutin Tahunan)</option>
                             <option value="3">3 Bulan (Deworming / Obat Cacing)</option>
                             <option value="1">1 Bulan (Anti-Kutu Bulanan)</option>
@@ -592,12 +562,12 @@
 
                 <div>
                     <label class="font-semibold text-slate-700 block mb-1">Nomor Batch / Catatan (Optional)</label>
-                    <input type="text" id="vacNotesInput" placeholder="Contoh: Batch No. #B-883921 / Kondisi Sehat" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                    <input type="text" id="vacNotesInput" placeholder="Contoh: Batch No. #B-883921 / Kondisi Sehat" class="input-field">
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
-                    <button type="button" onclick="closeAddVaccineModal()" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50">Batal</button>
-                    <button type="submit" id="saveVaccineBtn" class="btn-vet-primary px-5 py-2 rounded-xl text-xs font-bold shadow-xs flex items-center gap-1.5">
+                    <button type="button" onclick="closeAddVaccineModal()" class="btn btn-secondary">Batal</button>
+                    <button type="submit" id="saveVaccineBtn" class="btn btn-primary flex items-center gap-1.5">
                         <i data-lucide="check" class="w-4 h-4"></i> Simpan Record Vaksin
                     </button>
                 </div>
@@ -607,7 +577,7 @@
 
     <!-- Modal Catat Kunjungan Ulang (Re-visit Check-In) -->
     <div id="revisitModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+        <div class="card max-w-lg w-full p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div class="flex items-center gap-2.5">
                     <div class="w-9 h-9 rounded-xl bg-vetgreen-50 text-vetgreen-800 flex items-center justify-center">
@@ -625,11 +595,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="font-semibold text-slate-700 block mb-1">Tanggal Kunjungan *</label>
-                        <input type="date" id="revisitDateInput" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                        <input type="date" id="revisitDateInput" required class="input-field">
                     </div>
                     <div>
                         <label class="font-semibold text-slate-700 block mb-1">Dokter Pemeriksa (DPJP) *</label>
-                        <select id="revisitDoctorSelect" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white font-semibold">
+                        <select id="revisitDoctorSelect" required class="input-field font-semibold">
                             <option value="Dr. Sarah Jenkins">Dr. Sarah Jenkins (General Practitioner)</option>
                             <option value="Dr. Michael Lee">Dr. Michael Lee (Veterinary Surgeon)</option>
                             <option value="Dr. Amanda">Dr. Amanda (Veterinary Dermatologist)</option>
@@ -640,12 +610,12 @@
 
                 <div>
                     <label class="font-semibold text-slate-700 block mb-1">Judul / Kategori Kunjungan *</label>
-                    <input type="text" id="revisitTitleInput" required placeholder="Contoh: Kunjungan Kontrol Ulang / Checkup Berkala / Keluhan Demam" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white font-medium">
+                    <input type="text" id="revisitTitleInput" required placeholder="Contoh: Kunjungan Kontrol Ulang / Checkup Berkala / Keluhan Demam" class="input-field font-medium">
                 </div>
 
                 <div>
                     <label class="font-semibold text-slate-700 block mb-1">Detail Keluhan & Catatan Pemeriksaan Klinis *</label>
-                    <textarea id="revisitDetailInput" rows="3" required placeholder="Tuliskan keluhan terbaru, hasil anamnesa, atau temuan fisik saat kunjungan ini..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white resize-none"></textarea>
+                    <textarea id="revisitDetailInput" rows="3" required placeholder="Tuliskan keluhan terbaru, hasil anamnesa, atau temuan fisik saat kunjungan ini..." class="input-field resize-none"></textarea>
                 </div>
 
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
@@ -677,8 +647,8 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
-                    <button type="button" onclick="closeRevisitModal()" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50">Batal</button>
-                    <button type="submit" id="saveRevisitBtn" class="btn-vet-primary px-5 py-2 rounded-xl text-xs font-bold shadow-xs flex items-center gap-1.5">
+                    <button type="button" onclick="closeRevisitModal()" class="btn btn-secondary">Batal</button>
+                    <button type="submit" id="saveRevisitBtn" class="btn btn-primary flex items-center gap-1.5">
                         <i data-lucide="check" class="w-4 h-4"></i> Simpan Kunjungan Ulang
                     </button>
                 </div>

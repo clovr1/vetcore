@@ -34,46 +34,14 @@
     </script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body {
-            background-color: #F8FAFC;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #1E293B;
-        }
-        .serif-title {
-            font-family: 'Lora', serif;
-        }
-        .btn-vet-primary {
-            background-color: #044e3a;
-            color: #ffffff;
-            transition: all 0.2s ease;
-        }
-        .btn-vet-primary:hover {
-            background-color: #033b2c;
-            box-shadow: 0 4px 12px rgba(4, 78, 58, 0.25);
-        }
-        .sidebar-item-active {
-            background-color: #ECFDF5;
-            color: #065F46;
-            border: 1px solid #A7F3D0;
-            font-weight: 700;
-        }
-        .sidebar-item-inactive {
-            color: #475569;
-            font-weight: 500;
-        }
-        .sidebar-item-inactive:hover {
-            background-color: #F8FAFC;
-            color: #0F172A;
-        }
-    </style>
+    <link rel="stylesheet" href="/src/design-system.css">
 </head>
 <body class="min-h-screen flex text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-950">
 
     <!-- Sidebar Navigation -->
-    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 min-h-screen sticky top-0 h-screen">
+    <aside class="sidebar">
         <!-- Brand Header -->
-        <div class="px-5 pt-5 pb-4 border-b border-slate-100">
+        <div class="sidebar-brand">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-slate-900 text-white flex items-center justify-center shadow-xs shrink-0">
                     <i data-lucide="stethoscope" class="w-5 h-5 text-emerald-300"></i>
@@ -86,10 +54,10 @@
         </div>
 
         <!-- Navigation Menu -->
-        <nav id="sidebarNav" class="px-3 py-4 space-y-1 overflow-y-auto flex-1"></nav>
+        <nav id="sidebarNav" class="sidebar-nav"></nav>
 
         <!-- Bottom User Card -->
-        <div class="p-3 border-t border-slate-200/80 bg-slate-50/50">
+        <div class="sidebar-footer">
             <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
                 <a href="profile.html" id="sidebarProfileLink" class="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
                     <div id="sidebarAvatar" class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
@@ -121,7 +89,7 @@
                     <h1 class="serif-title text-2xl font-bold text-slate-900">Patient Master List</h1>
                     <p class="text-xs text-slate-500 mt-1">Search, filter, and manage all registered pet patients.</p>
                 </div>
-                <a href="add_patient.html" class="btn-vet-primary text-xs font-bold px-5 py-2.5 rounded-full shadow-sm flex items-center gap-2">
+                <a href="add_patient.html" class="btn btn-primary flex items-center gap-2">
                     <i data-lucide="plus" class="w-4 h-4"></i>
                     <span>Register New Patient</span>
                 </a>
@@ -164,7 +132,7 @@
             </div>
 
             <!-- Patient Table -->
-            <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+            <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-xs text-left text-slate-600">
                         <thead class="bg-slate-50 text-xs text-slate-500 uppercase font-semibold">

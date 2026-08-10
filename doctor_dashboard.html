@@ -31,37 +31,14 @@
         }
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body {
-            background-color: #F8FAFC;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #1E293B;
-        }
-        .serif-title {
-            font-family: 'Lora', serif;
-        }
-        .sidebar-item-active {
-            background-color: #ECFDF5;
-            color: #065F46;
-            border: 1px solid #A7F3D0;
-            font-weight: 700;
-        }
-        .sidebar-item-inactive {
-            color: #475569;
-            font-weight: 500;
-        }
-        .sidebar-item-inactive:hover {
-            background-color: #F8FAFC;
-            color: #0F172A;
-        }
-    </style>
+    <link rel="stylesheet" href="/src/design-system.css">
 </head>
 <body class="min-h-screen flex text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-950">
 
     <!-- Sidebar Navigation -->
-    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 min-h-screen sticky top-0 h-screen">
+    <aside class="sidebar">
         <!-- Brand Header -->
-        <div class="px-5 pt-5 pb-4 border-b border-slate-100">
+        <div class="sidebar-brand">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-slate-900 text-white flex items-center justify-center shadow-xs shrink-0">
                     <i data-lucide="stethoscope" class="w-5 h-5 text-emerald-300"></i>
@@ -74,10 +51,10 @@
         </div>
 
         <!-- Navigation Menu -->
-        <nav id="sidebarNav" class="px-3 py-4 space-y-1 overflow-y-auto flex-1"></nav>
+        <nav id="sidebarNav" class="sidebar-nav"></nav>
 
         <!-- Bottom User Card -->
-        <div class="p-3 border-t border-slate-200/80 bg-slate-50/50">
+        <div class="sidebar-footer">
             <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
                 <a href="profile.html" id="sidebarProfileLink" class="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
                     <div id="sidebarAvatar" class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
@@ -130,7 +107,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
                 <!-- Left: Quick Clinical SOAP Form -->
-                <div class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                <div class="lg:col-span-7 card p-6 space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div class="flex items-center gap-2.5">
                             <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
@@ -178,7 +155,7 @@
                 </div>
 
                 <!-- Right: Doctor Recent Feed -->
-                <div class="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between space-y-4">
+                <div class="lg:col-span-5 card p-6 flex flex-col justify-between space-y-4">
                     <div>
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
                             <h3 class="serif-title font-bold text-base text-slate-900">Riwayat Diagnosa Saya</h3>
@@ -198,7 +175,7 @@
             </div>
 
             <!-- Queue & Patients Requiring Attention Table -->
-            <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+            <div class="card overflow-hidden">
                 <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
                     <div>
                         <h3 class="serif-title font-bold text-base text-slate-900">Pasien Perlu Perhatian / Dalam Penanganan Dokter</h3>

@@ -316,7 +316,7 @@ function updatePaginationUI(totalFiltered: number, startIdx: number, endIdx: num
         <button 
           ${currentPage === 1 ? 'disabled' : ''} 
           onclick="changePatientPage(${currentPage - 1})"
-          class="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-lg text-xs hover:bg-slate-50 disabled:opacity-40 disabled:hover:bg-white transition-colors">
+          class="btn btn-secondary disabled:opacity-40 disabled:hover:bg-white transition-colors">
           Prev
         </button>
       `;
@@ -329,7 +329,7 @@ function updatePaginationUI(totalFiltered: number, startIdx: number, endIdx: num
       }
 
       if (startPage > 1) {
-        pageBtnsHtml += `<button onclick="changePatientPage(1)" class="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-lg text-xs hover:bg-slate-50">1</button>`;
+        pageBtnsHtml += `<button onclick="changePatientPage(1)" class="btn btn-secondary">1</button>`;
         if (startPage > 2) {
           pageBtnsHtml += `<span class="px-1 text-slate-400 text-xs font-bold">...</span>`;
         }
@@ -339,7 +339,7 @@ function updatePaginationUI(totalFiltered: number, startIdx: number, endIdx: num
         if (p === currentPage) {
           pageBtnsHtml += `<button class="bg-slate-900 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow-2xs">${p}</button>`;
         } else {
-          pageBtnsHtml += `<button onclick="changePatientPage(${p})" class="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-lg text-xs hover:bg-slate-50 transition-colors">${p}</button>`;
+          pageBtnsHtml += `<button onclick="changePatientPage(${p})" class="btn btn-secondary transition-colors">${p}</button>`;
         }
       }
 
@@ -347,14 +347,14 @@ function updatePaginationUI(totalFiltered: number, startIdx: number, endIdx: num
         if (endPage < totalPages - 1) {
           pageBtnsHtml += `<span class="px-1 text-slate-400 text-xs font-bold">...</span>`;
         }
-        pageBtnsHtml += `<button onclick="changePatientPage(${totalPages})" class="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-lg text-xs hover:bg-slate-50">${totalPages}</button>`;
+        pageBtnsHtml += `<button onclick="changePatientPage(${totalPages})" class="btn btn-secondary">${totalPages}</button>`;
       }
 
       pageBtnsHtml += `
         <button 
           ${currentPage === totalPages ? 'disabled' : ''} 
           onclick="changePatientPage(${currentPage + 1})"
-          class="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-lg text-xs hover:bg-slate-50 disabled:opacity-40 disabled:hover:bg-white transition-colors">
+          class="btn btn-secondary disabled:opacity-40 disabled:hover:bg-white transition-colors">
           Next
         </button>
       `;

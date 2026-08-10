@@ -102,7 +102,7 @@ function renderPrescriptions() {
 
   if (filtered.length === 0) {
     container.innerHTML = `
-      <div class="col-span-full bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 space-y-2">
+      <div class="card p-12 text-center text-slate-400 space-y-2">
         <i data-lucide="pill" class="w-10 h-10 mx-auto text-slate-300"></i>
         <p class="font-bold text-slate-700 text-sm">Tidak ada resep obat ditemukan</p>
         <p class="text-xs">Coba sesuaikan kata kunci pencarian atau buat resep obat baru.</p>
@@ -131,7 +131,7 @@ function renderPrescriptions() {
     `).join('');
 
     return `
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:border-slate-300 transition-all space-y-4 flex flex-col justify-between">
+      <div class="card p-5 hover:border-slate-300 transition-all space-y-4 flex flex-col justify-between">
         <div>
           <!-- Card Top Bar -->
           <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
@@ -282,15 +282,15 @@ function addRxItemRow(defaultName = '', defaultDosage = '', defaultInstructions 
   div.innerHTML = `
     <div class="col-span-5">
       <input type="text" placeholder="Nama Obat / Racikan *" required value="${defaultName}" 
-             class="rx-med-name w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800">
+             class="input-field rx-med-name">
     </div>
     <div class="col-span-3">
       <input type="text" placeholder="Dosis (e.g. 2x1)" required value="${defaultDosage}" 
-             class="rx-med-dosage w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800">
+             class="input-field rx-med-dosage">
     </div>
     <div class="col-span-3">
       <input type="text" placeholder="Aturan Pakai / Ket" value="${defaultInstructions}" 
-             class="rx-med-instructions w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800">
+             class="input-field rx-med-instructions">
     </div>
     <div class="col-span-1 text-right">
       <button type="button" onclick="removeRxItemRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition-colors" title="Hapus Baris">✕</button>

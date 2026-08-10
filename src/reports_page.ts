@@ -83,25 +83,25 @@ function getSpeciesBadge(species: string) {
   const s = (species || '').toLowerCase();
   if (s.includes('canine') || s.includes('anjing') || s.includes('dog')) {
     return {
-      pillClass: 'bg-blue-100 text-blue-700 font-semibold',
+      pillClass: 'badge-blue',
       iconBg: 'bg-teal-50 text-teal-800 border border-teal-200/80',
       label: 'Canine'
     };
   } else if (s.includes('feline') || s.includes('kucing') || s.includes('cat')) {
     return {
-      pillClass: 'bg-purple-100 text-purple-700 font-semibold',
+      pillClass: 'badge-purple',
       iconBg: 'bg-purple-50 text-purple-800 border border-purple-200/80',
       label: 'Feline'
     };
   } else if (s.includes('rabbit') || s.includes('kelinci')) {
     return {
-      pillClass: 'bg-amber-100 text-amber-700 font-semibold',
+      pillClass: 'badge-amber',
       iconBg: 'bg-amber-50 text-amber-800 border border-amber-200/80',
       label: 'Rabbit'
     };
   } else {
     return {
-      pillClass: 'bg-emerald-100 text-emerald-700 font-semibold',
+      pillClass: 'badge-emerald',
       iconBg: 'bg-emerald-50 text-emerald-800 border border-emerald-200/80',
       label: species || 'Exotic'
     };
@@ -157,7 +157,7 @@ function renderPatientListTable() {
         <button 
           ${currentPage === 1 ? 'disabled' : ''} 
           onclick="changeReportPage(${currentPage - 1})"
-          class="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-lg text-xs hover:bg-slate-50 disabled:opacity-40 disabled:hover:bg-white transition-colors">
+          class="btn btn-secondary disabled:opacity-40 disabled:hover:bg-white transition-colors">
           Prev
         </button>
       `;
@@ -171,7 +171,7 @@ function renderPatientListTable() {
       }
 
       if (startPage > 1) {
-        pageBtnsHtml += `<button onclick="changeReportPage(1)" class="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-lg text-xs hover:bg-slate-50">1</button>`;
+        pageBtnsHtml += `<button onclick="changeReportPage(1)" class="btn btn-secondary">1</button>`;
         if (startPage > 2) {
           pageBtnsHtml += `<span class="px-1 text-slate-400 text-xs font-bold">...</span>`;
         }
@@ -181,7 +181,7 @@ function renderPatientListTable() {
         if (p === currentPage) {
           pageBtnsHtml += `<button class="bg-slate-900 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow-2xs">${p}</button>`;
         } else {
-          pageBtnsHtml += `<button onclick="changeReportPage(${p})" class="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-lg text-xs hover:bg-slate-50 transition-colors">${p}</button>`;
+          pageBtnsHtml += `<button onclick="changeReportPage(${p})" class="btn btn-secondary transition-colors">${p}</button>`;
         }
       }
 
@@ -189,7 +189,7 @@ function renderPatientListTable() {
         if (endPage < totalPages - 1) {
           pageBtnsHtml += `<span class="px-1 text-slate-400 text-xs font-bold">...</span>`;
         }
-        pageBtnsHtml += `<button onclick="changeReportPage(${totalPages})" class="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-lg text-xs hover:bg-slate-50">${totalPages}</button>`;
+        pageBtnsHtml += `<button onclick="changeReportPage(${totalPages})" class="btn btn-secondary">${totalPages}</button>`;
       }
 
       // Next Button
@@ -197,7 +197,7 @@ function renderPatientListTable() {
         <button 
           ${currentPage === totalPages ? 'disabled' : ''} 
           onclick="changeReportPage(${currentPage + 1})"
-          class="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-lg text-xs hover:bg-slate-50 disabled:opacity-40 disabled:hover:bg-white transition-colors">
+          class="btn btn-secondary disabled:opacity-40 disabled:hover:bg-white transition-colors">
           Next
         </button>
       `;
@@ -241,7 +241,7 @@ function renderPatientListTable() {
 
         <!-- SPECIES / BREED -->
         <td class="px-6 py-4">
-          <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] ${badge.pillClass}">
+          <span class="badge ${badge.pillClass}">
             ${badge.label}
           </span>
           <div class="text-xs text-slate-500 mt-1">${escapeHtml(p.breed || '-')}</div>
