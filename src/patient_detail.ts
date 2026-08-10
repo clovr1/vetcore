@@ -339,23 +339,35 @@ function renderOwnerOtherPets(pets: Patient[], ownerName: string) {
       return '🐾';
     };
 
+    const MAX_VISIBLE = 3;
+    const visiblePets = pets.slice(0, MAX_VISIBLE);
+    const remainingCount = pets.length - MAX_VISIBLE;
+
     let switcherHtml = `
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500 text-slate-900 rounded-xl font-bold text-xs shadow-xs border border-emerald-400 shrink-0">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-lg font-semibold text-xs border border-emerald-200">
         <span>${getIcon(currentPatient.species)}</span>
         <span>${escapeHtml(currentPatient.name)}</span>
-        <span class="text-[10px] bg-slate-900/20 px-1.5 py-0.2 rounded font-semibold text-white">Sedang Dilihat</span>
+        <span class="text-[10px] bg-emerald-500 text-white px-1.5 py-0.5 rounded font-bold ml-0.5">Aktif</span>
       </span>
     `;
 
-    pets.forEach(p => {
+    visiblePets.forEach(p => {
       switcherHtml += `
-        <a href="patient.html?id=${escapeHtml(p.id)}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl font-semibold text-xs border border-slate-700 transition-all shrink-0">
+        <a href="patient.html?id=${escapeHtml(p.id)}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 rounded-lg font-semibold text-xs border border-slate-200 hover:border-slate-300 transition-all">
           <span>${getIcon(p.species)}</span>
           <span>${escapeHtml(p.name)}</span>
-          <span class="text-[10px] text-slate-400 font-normal">(${escapeHtml(p.species)})</span>
+          <span class="text-[10px] text-slate-400">(${escapeHtml(p.species)})</span>
         </a>
       `;
     });
+
+    if (remainingCount > 0) {
+      switcherHtml += `
+        <button onclick="document.getElementById('ownerOtherPetsList')?.scrollIntoView({behavior:'smooth',block:'center'})" class="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg font-semibold text-xs border border-slate-200 transition-all cursor-pointer">
+          +${remainingCount} lainnya
+        </button>
+      `;
+    }
 
     topSwitcher.innerHTML = switcherHtml;
   }

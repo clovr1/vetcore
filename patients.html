@@ -135,21 +135,20 @@
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-xs text-left text-slate-600">
-                        <thead class="bg-slate-50 text-xs text-slate-500 uppercase font-semibold">
+                        <thead class="bg-slate-50 text-[11px] text-slate-500 uppercase font-semibold tracking-wider">
                             <tr>
-                                <th class="px-5 py-3.5">Patient ID</th>
-                                <th class="px-5 py-3.5">Owner</th>
-                                <th class="px-5 py-3.5">Alamat Pemilik</th>
-                                <th class="px-5 py-3.5">Pet Name</th>
-                                <th class="px-5 py-3.5">Species/Breed</th>
-                                <th class="px-5 py-3.5">Last Visit</th>
-                                <th class="px-5 py-3.5">No. Telepon Pemilik</th>
-                                <th class="px-5 py-3.5"></th>
+                                <th class="px-5 py-3">ID</th>
+                                <th class="px-5 py-3">Pemilik</th>
+                                <th class="px-5 py-3">Alamat</th>
+                                <th class="px-5 py-3">Hewan</th>
+                                <th class="px-5 py-3">Kunjungan</th>
+                                <th class="px-5 py-3">Telepon</th>
+                                <th class="px-5 py-3 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="patientTableBody" class="divide-y divide-slate-100">
                             <tr id="initialLoadingRow">
-                                <td colspan="8" class="text-center py-8 text-slate-400 font-medium">
+                                <td colspan="7" class="text-center py-8 text-slate-400 font-medium">
                                     <div class="inline-flex items-center gap-2">
                                         <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-vetgreen-800"></i>
                                         Memuat daftar pasien dari Firestore database...

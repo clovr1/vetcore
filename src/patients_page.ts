@@ -153,57 +153,33 @@ function renderTable() {
       const tr = document.createElement('tr');
       tr.className = 'patient-row hover:bg-slate-50/80 transition-colors';
 
-      const encOwner = encodeURIComponent(g.owner_name);
-      const encPhone = encodeURIComponent(g.phone);
-      const encAddr = encodeURIComponent(g.address);
-      const addPetUrl = `add_patient.html?existing_owner=1&owner_name=${encOwner}&owner_phone=${encPhone}&owner_address=${encAddr}`;
-
-      const petPillsHtml = g.pets.map(p => {
-        let icon = '🐾';
-        const sp = (p.species || '').toLowerCase();
-        if (sp.includes('kucing') || sp.includes('cat')) icon = '🐱';
-        else if (sp.includes('anjing') || sp.includes('dog')) icon = '🐶';
-        else if (sp.includes('kelinci') || sp.includes('rabbit')) icon = '🐰';
-        else if (sp.includes('burung') || sp.includes('bird')) icon = '🦜';
-
-        return `
-          <a href="patient.html?id=${escapeHtml(p.id)}" class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-vetgreen-900 border border-emerald-200 rounded-lg text-xs font-bold transition-all hover:scale-105 shadow-2xs group" title="Lihat Rekam Medis ${escapeHtml(p.name)}">
-            <span>${icon}</span>
-            <span>${escapeHtml(p.name)}</span>
-            <span class="text-[10px] text-vetgreen-700 font-normal">(${escapeHtml(p.species)})</span>
-            <i data-lucide="arrow-right" class="w-3 h-3 text-vetgreen-600 group-hover:translate-x-0.5 transition-transform"></i>
-          </a>
-        `;
-      }).join('');
-
       const allSpeciesStr = Array.from(new Set(g.pets.map(p => p.species))).join(', ');
+      const displayPets = g.pets.slice(0, 3);
+      const morePetsCount = g.pets.length - 3;
 
       tr.innerHTML = `
-        <td class="px-5 py-4 font-mono text-slate-500">${escapeHtml(g.primary_code)}</td>
-        <td class="px-5 py-4 font-bold text-sm text-slate-900">
-          <div class="flex items-center gap-2">
-            <span>${escapeHtml(g.owner_name)}</span>
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-800 border border-indigo-200">
-              🐾 ${g.pets.length} Hewan
-            </span>
-          </div>
-        </td>
-        <td class="px-5 py-4 text-slate-700 max-w-xs truncate" title="${escapeHtml(g.address)}">${escapeHtml(g.address)}</td>
+        <td class="px-5 py-4 font-mono text-[11px] text-slate-400">${escapeHtml(g.primary_code)}</td>
         <td class="px-5 py-4">
-          <div class="flex flex-wrap items-center gap-1.5">
-            ${petPillsHtml}
-            <a href="${addPetUrl}" class="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-[11px] font-semibold border border-slate-200 transition-colors" title="Tambah hewan baru untuk pemilik ini">
-              <i data-lucide="plus" class="w-3 h-3"></i> Hewan Baru
-            </a>
+          <div class="font-semibold text-sm text-slate-900">${escapeHtml(g.owner_name)}</div>
+        </td>
+        <td class="px-5 py-4 text-slate-600 text-xs max-w-[140px] truncate" title="${escapeHtml(g.address)}">${escapeHtml(g.address)}</td>
+        <td class="px-5 py-4">
+          <div class="flex flex-wrap gap-1">
+            ${displayPets.map(p => {
+              let icon = '🐾';
+              const sp = (p.species || '').toLowerCase();
+              if (sp.includes('kucing') || sp.includes('cat')) icon = '🐱';
+              else if (sp.includes('anjing') || sp.includes('dog')) icon = '🐶';
+              else if (sp.includes('kelinci') || sp.includes('rabbit')) icon = '🐰';
+              return `<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 border border-slate-100 rounded text-[11px] text-slate-600">${icon} ${escapeHtml(p.name)}</span>`;
+            }).join('')}
+            ${morePetsCount > 0 ? `<span class="text-[10px] text-slate-400">+${morePetsCount}</span>` : ''}
           </div>
         </td>
-        <td class="px-5 py-4 text-slate-700 font-medium">${escapeHtml(allSpeciesStr)}</td>
-        <td class="px-5 py-4 text-slate-600">${escapeHtml(g.latest_visit)}</td>
-        <td class="px-5 py-4 font-mono text-slate-800 font-medium">${escapeHtml(g.phone)}</td>
+        <td class="px-5 py-4 text-slate-600 text-xs">${escapeHtml(g.latest_visit || '-')}</td>
+        <td class="px-5 py-4 font-mono text-[11px] text-slate-500">${escapeHtml(g.phone)}</td>
         <td class="px-5 py-4 text-right">
-          <a href="patient.html?id=${escapeHtml(g.pets[0].id)}" class="text-xs font-bold text-vetgreen-800 hover:underline inline-flex items-center gap-1">
-            Lihat Pasien <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-          </a>
+          <a href="patient.html?id=${escapeHtml(g.pets[0].id)}" class="text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">Lihat →</a>
         </td>
       `;
 
@@ -248,24 +224,7 @@ function renderTable() {
     const existingRows = tbody.querySelectorAll('.patient-row');
     existingRows.forEach(r => r.remove());
 
-    const ownerPetsMap = new Map<string, Patient[]>();
-    allPatients.forEach(p => {
-      const key = (p.owner_name || '').toLowerCase().trim();
-      if (key) {
-        if (!ownerPetsMap.has(key)) ownerPetsMap.set(key, []);
-        ownerPetsMap.get(key)!.push(p);
-      }
-    });
-
     pageItems.forEach(p => {
-      const key = (p.owner_name || '').toLowerCase().trim();
-      const ownerPets = ownerPetsMap.get(key) || [];
-      let ownerMultiBadge = '';
-      if (ownerPets.length > 1) {
-        const otherNames = ownerPets.map(o => o.name).join(', ');
-        ownerMultiBadge = `<span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-800 border border-indigo-200 shrink-0" title="Pemilik ini memiliki ${ownerPets.length} hewan: ${escapeHtml(otherNames)}">🐾 ${ownerPets.length} Hewan</span>`;
-      }
-
       const tr = document.createElement('tr');
       tr.className = 'patient-row hover:bg-slate-50/80 cursor-pointer transition-colors';
       tr.onclick = () => {
@@ -273,19 +232,22 @@ function renderTable() {
       };
 
       tr.innerHTML = `
-        <td class="px-5 py-4 font-mono text-slate-500">${escapeHtml(p.code || '#PT-0000')}</td>
-        <td class="px-5 py-4 font-bold text-sm text-slate-900">
-          <div class="flex items-center flex-wrap gap-1">
-            <span>${escapeHtml(p.owner_name)}</span>
-            ${ownerMultiBadge}
-          </div>
+        <td class="px-5 py-4 font-mono text-[11px] text-slate-400">${escapeHtml(p.code || '#PT-0000')}</td>
+        <td class="px-5 py-4">
+          <div class="font-semibold text-sm text-slate-900">${escapeHtml(p.owner_name)}</div>
         </td>
-        <td class="px-5 py-4 text-slate-700 max-w-xs truncate" title="${escapeHtml(p.address || '-')}">${escapeHtml(p.address || '-')}</td>
-        <td class="px-5 py-4"><span class="serif-title font-bold text-sm text-slate-900">${escapeHtml(p.name)}</span></td>
-        <td class="px-5 py-4 text-slate-700">${escapeHtml(p.species)} / ${escapeHtml(p.breed || '-')}</td>
-        <td class="px-5 py-4 text-slate-600">${escapeHtml(p.last_visit || 'Hari ini')}</td>
-        <td class="px-5 py-4 font-mono text-slate-800 font-medium">${escapeHtml(p.phone || '-')}</td>
-        <td class="px-5 py-4 text-right"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i></td>
+        <td class="px-5 py-4 text-slate-600 text-xs max-w-[140px] truncate" title="${escapeHtml(p.address || '-')}">${escapeHtml(p.address || '-')}</td>
+        <td class="px-5 py-4">
+          <div class="flex items-center gap-1.5">
+            <span class="serif-title font-bold text-sm text-slate-900">${escapeHtml(p.name)}</span>
+          </div>
+          <div class="text-[11px] text-slate-500 mt-0.5">${escapeHtml(p.species)} / ${escapeHtml(p.breed || '-')}</div>
+        </td>
+        <td class="px-5 py-4 text-slate-600 text-xs">${escapeHtml(p.last_visit || '-')}</td>
+        <td class="px-5 py-4 font-mono text-[11px] text-slate-500">${escapeHtml(p.phone || '-')}</td>
+        <td class="px-5 py-4 text-right">
+          <a href="patient.html?id=${escapeHtml(p.id)}" class="text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">Lihat →</a>
+        </td>
       `;
 
       tbody.insertBefore(tr, noResultsRow || null);

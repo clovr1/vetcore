@@ -77,18 +77,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       recentFeedContainer.innerHTML = snap.docs.map(docSnap => {
         const data = docSnap.data();
+        const title = data.title || 'Catatan Klinis';
+        const initials = title.substring(0,2).toUpperCase();
+        const dateStr = data.note_date || '';
+        
+        let dateFormatted = 'Hari ini';
+        if (dateStr) {
+          try {
+            const d = new Date(dateStr);
+            if (!isNaN(d.getTime())) {
+              dateFormatted = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+            } else {
+              dateFormatted = dateStr;
+            }
+          } catch { dateFormatted = dateStr; }
+        }
+
         return `
-          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-xs">
-                ${escapeHtml(data.title ? data.title.substring(0,2).toUpperCase() : 'CL')}
-              </div>
-              <div>
-                <span class="font-bold text-slate-900 block">${escapeHtml(data.title || 'Catatan Klinis')}</span>
-                <span class="text-slate-500">${escapeHtml(data.detail || '')}</span>
-              </div>
+          <div class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+            <div class="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0">
+              <span class="text-emerald-700 font-bold text-[11px]">${escapeHtml(initials)}</span>
             </div>
-            <span class="text-[10px] text-slate-400 font-mono">${escapeHtml(data.note_date || 'Hari ini')}</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-bold text-slate-800 truncate">${escapeHtml(title)}</p>
+              <p class="text-[11px] text-slate-500 mt-0.5 truncate">${escapeHtml(data.detail || '')}</p>
+            </div>
+            <span class="text-[10px] text-slate-400 whitespace-nowrap shrink-0">${escapeHtml(dateFormatted)}</span>
           </div>
         `;
       }).join('');
