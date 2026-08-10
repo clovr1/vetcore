@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetCore Systems - New Patient Registration</title>
+    <!-- Google Fonts: Plus Jakarta Sans & Lora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                    },
+                    colors: {
+                        vetgreen: {
+                            50: '#e6f4f0',
+                            100: '#c3e4da',
+                            700: '#075e47',
+                            800: '#044e3a',
+                            900: '#033b2c',
+                            950: '#01241b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background-color: #F8FAFC;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1E293B;
+        }
+        .serif-title {
+            font-family: 'Lora', serif;
+        }
+        .btn-vet-primary {
+            background-color: #044e3a;
+            color: #ffffff;
+            transition: all 0.2s ease;
+        }
+        .btn-vet-primary:hover {
+            background-color: #033b2c;
+            box-shadow: 0 4px 12px rgba(4, 78, 58, 0.25);
+        }
+        .input-field {
+            width: 100%;
+            background-color: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            border-radius: 0.5rem;
+            padding: 0.6rem 0.85rem;
+            font-size: 0.875rem;
+            color: #0F172A;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .input-field:focus {
+            border-color: #044e3a;
+            box-shadow: 0 0 0 2px rgba(4, 78, 58, 0.1);
+        }
+        .sidebar-item-active {
+            background-color: #ECFDF5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+            font-weight: 700;
+        }
+        .sidebar-item-inactive {
+            color: #475569;
+            font-weight: 500;
+        }
+        .sidebar-item-inactive:hover {
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-950">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 min-h-screen sticky top-0 h-screen">
+        <!-- Brand Header -->
+        <div class="px-5 pt-5 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-slate-900 text-white flex items-center justify-center shadow-xs shrink-0">
+                    <i data-lucide="stethoscope" class="w-5 h-5 text-emerald-300"></i>
+                </div>
+                <div class="min-w-0">
+                    <h1 class="serif-title font-bold text-base text-slate-900 leading-tight truncate">VetCore Systems</h1>
+                    <span class="text-[11px] font-semibold text-emerald-800 block truncate">Klinik & Rekam Medis</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="px-3 py-4 space-y-1 overflow-y-auto flex-1">
+            <a href="index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="layout-grid" class="w-4 h-4 shrink-0"></i> Overview Utama
+            </a>
+            <a href="doctor_dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="stethoscope" class="w-4 h-4 shrink-0"></i> Portal Dokter
+            </a>
+            <a href="patients.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-active transition-all">
+                <i data-lucide="paw-print" class="w-4 h-4 shrink-0"></i> Daftar Pasien
+            </a>
+            <a href="prescriptions.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="pill" class="w-4 h-4 shrink-0"></i> E-Prescriptions
+            </a>
+            <a href="reports.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i> Laporan & Rekam
+            </a>
+            <a href="profile.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="user" class="w-4 h-4 shrink-0"></i> Profil Saya
+            </a>
+        </nav>
+
+        <!-- Bottom User Card -->
+        <div class="p-3 border-t border-slate-200/80 bg-slate-50/50">
+            <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                <a href="profile.html" id="sidebarProfileLink" class="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
+                    <div id="sidebarAvatar" class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                        SR
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p id="sidebarUserName" class="text-xs font-bold text-slate-900 truncate leading-snug">Siti Rahma</p>
+                        <div class="flex items-center gap-1 mt-0.5">
+                            <span id="sidebarRoleBadge" class="inline-flex items-center px-1.5 py-0.5 text-[9px] font-bold rounded-md bg-blue-100 text-blue-800 border border-blue-200 leading-none truncate">
+                                📋 Front Office
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                <button id="sidebarLogoutBtn" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shrink-0" title="Keluar / Logout">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-w-0 p-8 overflow-y-auto">
+        <div class="max-w-3xl mx-auto space-y-6">
+
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="serif-title text-2xl font-bold text-slate-900">New Patient Registration</h1>
+                    <p class="text-xs text-slate-500 mt-1">Complete the form below to register a new pet patient.</p>
+                </div>
+                <a href="patients.html" class="p-2 rounded-full hover:bg-slate-200 text-slate-500 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </a>
+            </div>
+
+            <!-- Form terhubung langsung ke Firebase Firestore -->
+            <form id="addPatientForm" class="space-y-6">
+
+                <!-- Section 1: Animal Data -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                    <h2 class="serif-title font-bold text-sm text-slate-900 border-b border-slate-100 pb-3">Pet Information</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Pet Name *</label>
+                            <input type="text" id="patientName" required placeholder="Enter pet name" class="input-field">
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Species / Animal Type *</label>
+                            <select id="species" required class="input-field">
+                                <option value="" disabled selected>-- Pilih Spesies --</option>
+                                <option value="Anjing">Anjing</option>
+                                <option value="Kucing">Kucing</option>
+                                <option value="Rabbit">Kelinci (Rabbit)</option>
+                                <option value="Bird">Burung (Bird)</option>
+                                <option value="Other">Lainnya</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Breed</label>
+                            <input type="text" id="breed" placeholder="e.g. Golden Retriever, Persian" class="input-field">
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Gender</label>
+                            <select id="gender" required class="input-field">
+                                <option value="" disabled selected>-- Pilih Jenis Kelamin --</option>
+                                <option value="Jantan">Jantan</option>
+                                <option value="Betina">Betina</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Age</label>
+                            <input type="text" id="age" placeholder="e.g. 3 Years / 6 Bulan" class="input-field">
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Initial Status</label>
+                            <select id="status" required class="input-field">
+                                <option value="" disabled selected>-- Pilih Status --</option>
+                                <option value="Sehat">Sehat</option>
+                                <option value="Pemulihan">Pemulihan</option>
+                                <option value="Perlu Perhatian">Perlu Perhatian</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Owner Contact -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div>
+                            <h2 class="serif-title font-bold text-sm text-slate-900">Owner Information & Contact</h2>
+                            <p class="text-[11px] text-slate-500">Pilih dari pemilik terdaftar jika membawa hewan baru, atau isi data pemilik baru.</p>
+                        </div>
+                        <span id="existingOwnerBadge" class="hidden px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-200">
+                            ✓ Pemilik Terdaftar
+                        </span>
+                    </div>
+
+                    <div class="space-y-3 text-xs">
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Cari / Pilih Pemilik Terdaftar (Optional)</label>
+                            <select id="existingOwnerSelect" class="input-field font-medium bg-slate-50">
+                                <option value="">-- Mode Pemilik Baru (Isi Manual) --</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="font-semibold text-slate-700 mb-1.5 block">Owner Name *</label>
+                                <input type="text" id="ownerName" required placeholder="Enter owner's full name" class="input-field">
+                            </div>
+
+                            <div>
+                                <label class="font-semibold text-slate-700 mb-1.5 block">Phone Number *</label>
+                                <div class="input-field !p-0 flex items-center overflow-hidden focus-within:border-vetgreen-800">
+                                    <span class="inline-flex items-center px-3 py-2 bg-slate-100 text-slate-700 text-xs font-bold border-r border-slate-300 select-none shrink-0">+62</span>
+                                    <input type="tel" id="ownerPhone" required maxlength="12" placeholder="81234567890 (maks 12 digit)" class="w-full bg-transparent px-3 py-2 text-xs text-slate-900 focus:outline-none">
+                                </div>
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="font-semibold text-slate-700 mb-1.5 block">Address</label>
+                                <textarea id="ownerAddress" rows="2" placeholder="Enter owner's home address" class="input-field resize-none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Assigned Doctor, Vitals & Initial Complaint -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                    <h2 class="serif-title font-bold text-sm text-slate-900 border-b border-slate-100 pb-3">Doctor, Vitals & Keluhan Awal</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Attending Doctor (DPJP) *</label>
+                            <select id="doctorName" required class="input-field font-semibold text-slate-900">
+                                <option value="" disabled selected>-- Pilih Dokter --</option>
+                                <option value="Dr. Sarah Jenkins">Dr. Sarah Jenkins (General Practitioner)</option>
+                                <option value="Dr. Michael Lee">Dr. Michael Lee (Veterinary Surgeon)</option>
+                                <option value="Dr. Amanda">Dr. Amanda (Veterinary Dermatologist)</option>
+                                <option value="Dr. Smith">Dr. Smith (Internal Medicine)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Berat Badan awal (kg)</label>
+                            <input type="text" id="weight" placeholder="e.g. 4.5" class="input-field">
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Suhu Tubuh (°C)</label>
+                            <input type="text" id="temperature" placeholder="e.g. 38.5" class="input-field">
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Detak Jantung (bpm)</label>
+                            <input type="text" id="heartRate" placeholder="e.g. 110" class="input-field">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Keluhan Utama / Catatan Awal saat Pendaftaran</label>
+                            <textarea id="initialComplaint" rows="2" placeholder="Detail keluhan awal hewan (cth: Nafsu makan turun sejak 2 hari lalu, muntah, atau checkup berkala)" class="input-field resize-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Bar -->
+                <div class="flex items-center justify-end gap-3 pt-2">
+                    <a href="patients.html" class="px-5 py-2.5 rounded-full border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-all">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn-vet-primary text-xs font-bold px-6 py-2.5 rounded-full shadow-sm">
+                        Simpan & Daftarkan Pasien Ke Firestore
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-white border border-emerald-300 text-slate-800 p-4 rounded-xl shadow-xl flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <div>
+                <h4 class="text-xs font-bold text-slate-900">Patient Registered Successfully!</h4>
+                <p class="text-[11px] text-slate-500 mt-0.5">The new patient has been added to the list.</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/add_patient_page.ts"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

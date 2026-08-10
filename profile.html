@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetCore Systems - Profil Pengguna</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                    },
+                    colors: {
+                        vetgreen: {
+                            50: '#e6f4f0',
+                            100: '#c3e4da',
+                            700: '#075e47',
+                            800: '#044e3a',
+                            900: '#033b2c',
+                            950: '#01241b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background-color: #F8FAFC;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1E293B;
+        }
+        .serif-title {
+            font-family: 'Lora', serif;
+        }
+        .sidebar-item-active {
+            background-color: #ECFDF5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+            font-weight: 700;
+        }
+        .sidebar-item-inactive {
+            color: #475569;
+            font-weight: 500;
+        }
+        .sidebar-item-inactive:hover {
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-950">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 min-h-screen sticky top-0 h-screen">
+        <!-- Brand Header -->
+        <div class="px-5 pt-5 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-slate-900 text-white flex items-center justify-center shadow-xs shrink-0">
+                    <i data-lucide="stethoscope" class="w-5 h-5 text-emerald-300"></i>
+                </div>
+                <div class="min-w-0">
+                    <h1 class="serif-title font-bold text-base text-slate-900 leading-tight truncate">VetCore Systems</h1>
+                    <span class="text-[11px] font-semibold text-emerald-800 block truncate">Klinik & Rekam Medis</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="px-3 py-4 space-y-1 overflow-y-auto flex-1">
+            <a href="index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="layout-grid" class="w-4 h-4 shrink-0"></i> Overview Utama
+            </a>
+            <a href="doctor_dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="stethoscope" class="w-4 h-4 shrink-0"></i> Portal Dokter
+            </a>
+            <a href="patients.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="paw-print" class="w-4 h-4 shrink-0"></i> Daftar Pasien
+            </a>
+            <a href="prescriptions.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="pill" class="w-4 h-4 shrink-0"></i> E-Prescriptions
+            </a>
+            <a href="reports.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i> Laporan & Rekam
+            </a>
+            <a href="profile.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-active transition-all">
+                <i data-lucide="user" class="w-4 h-4 shrink-0"></i> Profil Saya
+            </a>
+        </nav>
+
+        <!-- Bottom User Card -->
+        <div class="p-3 border-t border-slate-200/80 bg-slate-50/50">
+            <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                <a href="profile.html" id="sidebarProfileLink" class="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
+                    <div id="sidebarAvatar" class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                        SR
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p id="sidebarUserName" class="text-xs font-bold text-slate-900 truncate leading-snug">Siti Rahma</p>
+                        <div class="flex items-center gap-1 mt-0.5">
+                            <span id="sidebarRoleBadge" class="inline-flex items-center px-1.5 py-0.5 text-[9px] font-bold rounded-md bg-blue-100 text-blue-800 border border-blue-200 leading-none truncate">
+                                📋 Front Office
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                <button id="sidebarLogoutBtn" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shrink-0" title="Keluar / Logout">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 min-w-0 p-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto space-y-6">
+
+            <!-- Back Nav Button -->
+            <div class="flex items-center justify-between">
+                <a id="profileBackBtn" href="index.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3.5 py-2 rounded-xl shadow-2xs hover:border-slate-300 transition-all">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Dashboard
+                </a>
+
+                <button id="switchRoleBtn" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition-colors cursor-pointer">
+                    <i data-lucide="repeat" class="w-3.5 h-3.5 text-emerald-400"></i>
+                    <span>⚡ Demo: Switch Akun (Dokter ↔ FO)</span>
+                </button>
+            </div>
+
+            <!-- Profile Main Header Card -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm relative overflow-hidden">
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 relative z-10">
+                    <div id="profileAvatar" class="w-24 h-24 rounded-2xl bg-gradient-to-br from-vetgreen-800 to-slate-900 text-white font-bold text-2xl flex items-center justify-center shadow-lg shrink-0 border-2 border-emerald-500/20">
+                        SR
+                    </div>
+
+                    <div class="space-y-2 text-center sm:text-left flex-1">
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                            <span id="profileRoleBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-300">
+                                📋 Front Office
+                            </span>
+                            <span id="profileIdBadge" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                                FO-2026-088
+                            </span>
+                        </div>
+
+                        <h1 id="profileName" class="serif-title text-2xl font-bold text-slate-900">Siti Rahma, A.Md</h1>
+                        <p id="profileTitle" class="text-xs font-semibold text-slate-600">Head of Front Office & Patient Admission</p>
+
+                        <p id="profileBio" class="text-xs text-slate-500 leading-relaxed pt-1">
+                            Penanggung jawab utama penerimaan pasien, pendaftaran hewan, dan koordinasi alur rekam medis.
+                        </p>
+                    </div>
+
+                    <div class="shrink-0 flex flex-col gap-2 w-full sm:w-auto">
+                        <button id="logoutProfileBtn" class="px-4 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs border border-red-200 transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                            <i data-lucide="log-out" class="w-4 h-4"></i> Keluar Akun
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Information Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Left Card: Kontak & Shift Kerja -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                    <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+                        <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
+                            <i data-lucide="id-card" class="w-4 h-4"></i>
+                        </div>
+                        <h3 class="serif-title font-bold text-base text-slate-900">Informasi Kontak & Shift</h3>
+                    </div>
+
+                    <div class="space-y-3 text-xs">
+                        <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl">
+                            <span class="text-slate-500 font-medium">Email Pegawai:</span>
+                            <span id="profileEmail" class="font-bold text-slate-900 font-mono">frontoffice@vet.com</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl">
+                            <span class="text-slate-500 font-medium">No. Telepon / WhatsApp:</span>
+                            <span id="profilePhone" class="font-bold text-slate-900 font-mono">+62 813 5555 4444</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl">
+                            <span class="text-slate-500 font-medium">Shift Kerja Offisial:</span>
+                            <span id="profileShift" class="font-bold text-slate-900">Senin - Sabtu (07.00 - 15.00 WIB)</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl">
+                            <span class="text-slate-500 font-medium">Tanggal Bergabung:</span>
+                            <span id="profileJoined" class="font-bold text-slate-900">10 Feb 2023</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Card: Tanggung Jawab & Spesialisasi -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                    <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                            <i data-lucide="award" class="w-4 h-4"></i>
+                        </div>
+                        <h3 class="serif-title font-bold text-base text-slate-900">Spesialisasi & Bidang Tugas</h3>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div>
+                            <span class="text-xs text-slate-500 font-medium block mb-1">Bidang Keahlian:</span>
+                            <div id="profileSpecialization" class="p-3 bg-emerald-50/60 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-900">
+                                Customer Care & Admission Management
+                            </div>
+                        </div>
+
+                        <!-- Doctor Special Certificate (Shown when Doctor) -->
+                        <div id="doctorCertCard" class="hidden p-3.5 bg-slate-900 text-white rounded-xl space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-emerald-400">Surat Izin Praktik (SIP) Dokter</span>
+                                <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">Resmi Terverifikasi</span>
+                            </div>
+                            <p class="text-xs font-mono">No. 503/SIP-VET/2026/014</p>
+                            <p class="text-[11px] text-slate-300">Diterbitkan oleh Dinas Kesehatan & Perhimpunan Dokter Hewan Indonesia (PDHI).</p>
+                        </div>
+
+                        <!-- Front Office Tasks (Shown when FO) -->
+                        <div id="frontOfficeTaskCard" class="p-3.5 bg-slate-900 text-white rounded-xl space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-blue-400">Otoritas Akses Front Office</span>
+                                <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30">Aktif</span>
+                            </div>
+                            <p class="text-xs font-medium">Akses Pendaftaran Pasien, Input Rekam Medis Pemilik, Pengelolaan Resep & Billing Klinik.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script type="module" src="/src/profile_page.ts"></script>
+</body>
+</html>
