@@ -1,0 +1,6 @@
+{
+  "name": "VetCore Systems",
+  "description": "Veterinary clinical management portal for patient registration, medical records, and health reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

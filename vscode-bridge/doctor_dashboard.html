@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetCore Systems - Portal Praktik Dokter Hewan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                    },
+                    colors: {
+                        vetgreen: {
+                            50: '#e6f4f0',
+                            100: '#c3e4da',
+                            700: '#075e47',
+                            800: '#044e3a',
+                            900: '#033b2c',
+                            950: '#01241b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background-color: #F8FAFC;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1E293B;
+        }
+        .serif-title {
+            font-family: 'Lora', serif;
+        }
+        .sidebar-item-active {
+            background-color: #ECFDF5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+            font-weight: 700;
+        }
+        .sidebar-item-inactive {
+            color: #475569;
+            font-weight: 500;
+        }
+        .sidebar-item-inactive:hover {
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-950">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 min-h-screen sticky top-0 h-screen">
+        <!-- Brand Header -->
+        <div class="px-5 pt-5 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-slate-900 text-white flex items-center justify-center shadow-xs shrink-0">
+                    <i data-lucide="stethoscope" class="w-5 h-5 text-emerald-300"></i>
+                </div>
+                <div class="min-w-0">
+                    <h1 class="serif-title font-bold text-base text-slate-900 leading-tight truncate">VetCore Systems</h1>
+                    <span class="text-[11px] font-semibold text-emerald-800 block truncate">Klinik & Rekam Medis</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="px-3 py-4 space-y-1 overflow-y-auto flex-1">
+            <a href="index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="layout-grid" class="w-4 h-4 shrink-0"></i> Overview Utama
+            </a>
+            <a href="doctor_dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-active transition-all">
+                <i data-lucide="stethoscope" class="w-4 h-4 shrink-0"></i> Portal Dokter
+            </a>
+            <a href="patients.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="paw-print" class="w-4 h-4 shrink-0"></i> Daftar Pasien
+            </a>
+            <a href="prescriptions.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="pill" class="w-4 h-4 shrink-0"></i> E-Prescriptions
+            </a>
+            <a href="reports.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i> Laporan & Rekam
+            </a>
+            <a href="profile.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sidebar-item-inactive transition-all">
+                <i data-lucide="user" class="w-4 h-4 shrink-0"></i> Profil Saya
+            </a>
+        </nav>
+
+        <!-- Bottom User Card -->
+        <div class="p-3 border-t border-slate-200/80 bg-slate-50/50">
+            <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                <a href="profile.html" id="sidebarProfileLink" class="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
+                    <div id="sidebarAvatar" class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                        SJ
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p id="sidebarUserName" class="text-xs font-bold text-slate-900 truncate leading-snug">Dr. Sarah Jenkins</p>
+                        <div class="flex items-center gap-1 mt-0.5">
+                            <span id="sidebarRoleBadge" class="inline-flex items-center px-1.5 py-0.5 text-[9px] font-bold rounded-md bg-emerald-100 text-emerald-800 border border-emerald-200 leading-none truncate">
+                                👨‍⚕️ Dokter Hewan
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                <button id="sidebarLogoutBtn" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shrink-0" title="Keluar / Logout">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 min-w-0 p-8 overflow-y-auto">
+        <div class="max-w-6xl mx-auto space-y-6">
+
+            <!-- Top Welcome Banner Dokter -->
+            <div class="bg-gradient-to-r from-vetgreen-900 via-vetgreen-800 to-slate-900 text-white rounded-3xl p-6 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+                <div class="space-y-1 relative z-10">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+                            ● Dokter Praktik Aktif
+                        </span>
+                        <span id="doctorPortalSip" class="text-xs text-slate-300 font-mono">SIP: 503/SIP-VET/2026/014</span>
+                    </div>
+                    <h1 id="doctorPortalName" class="serif-title text-2xl font-bold text-white">Dr. Sarah Jenkins, DVM</h1>
+                    <p id="doctorPortalSpec" class="text-xs text-slate-300">Spesialis Bedah Hewan Kecil, Feline & Canine Medicine</p>
+                </div>
+
+                <div class="flex items-center gap-3 shrink-0 relative z-10">
+                    <a href="profile.html" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition-all flex items-center gap-1.5">
+                        <i data-lucide="user" class="w-4 h-4"></i> Lihat Profil Saya
+                    </a>
+                    <a href="index.html" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-sm transition-all flex items-center gap-1.5">
+                        <i data-lucide="arrow-right-left" class="w-4 h-4"></i> Buka Web Utama Klinik
+                    </a>
+                </div>
+            </div>
+
+            <!-- Doctor Quick Action: Direct Examination & SOAP Note Form -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Left: Quick Clinical SOAP Form -->
+                <div class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                                <i data-lucide="file-signature" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h3 class="serif-title font-bold text-base text-slate-900">Input Catatan Medis & E-Prescription</h3>
+                                <p class="text-xs text-slate-500">Pemeriksaan fisik instan, diagnosa SOAP & obat pasien</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="doctorActionAlert" class="hidden p-3 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200"></div>
+
+                    <form id="doctorQuickNoteForm" class="space-y-3.5">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Pasien Hewan</label>
+                            <select id="doctorPatientSelect" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-medium focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                                <option value="">Memuat daftar pasien...</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Judul / Gejala Utama (Assessment)</label>
+                            <input type="text" id="doctorNoteTitle" placeholder="misal: Kontrol Pasca Operasi / Infeksi Saluran Cerna" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:outline-none focus:border-vetgreen-800 focus:bg-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Detail Pemeriksaan SOAP (Subjective, Objective, Plan)</label>
+                            <textarea id="doctorNoteDetail" rows="3" placeholder="Deskripsikan kondisi fisik, suhu, detak jantung, dan instruksi penanganan..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-vetgreen-800 focus:bg-white"></textarea>
+                        </div>
+
+                        <div class="p-3.5 bg-emerald-50/60 border border-emerald-200 rounded-xl space-y-2">
+                            <span class="text-xs font-bold text-emerald-900 block">💊 Resep Obat Langsung (Optional):</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <input type="text" id="doctorMedName" placeholder="Nama Obat (mis: Amoxicillin 250mg)" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900">
+                                <input type="text" id="doctorMedDosage" placeholder="Dosis (mis: 2x1 tablet sesudah makan)" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full py-2.5 rounded-xl bg-vetgreen-800 hover:bg-vetgreen-900 text-white font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i> Simpan Rekam Medis Dokter
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right: Doctor Recent Feed -->
+                <div class="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
+                            <h3 class="serif-title font-bold text-base text-slate-900">Riwayat Diagnosa Saya</h3>
+                            <span class="text-[11px] text-slate-400 font-mono">Terbaru</span>
+                        </div>
+                        <div id="doctorRecentNotesFeed" class="space-y-2.5 max-h-80 overflow-y-auto pr-1">
+                            <div class="text-xs text-slate-400 p-2">Memuat catatan rekam medis...</div>
+                        </div>
+                    </div>
+
+                    <a href="prescriptions.html" class="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs text-slate-700 font-bold flex items-center justify-between transition-colors">
+                        <span>Lihat Semua E-Prescription Terbitan Saya</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 text-slate-500"></i>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Queue & Patients Requiring Attention Table -->
+            <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+                    <div>
+                        <h3 class="serif-title font-bold text-base text-slate-900">Pasien Perlu Perhatian / Dalam Penanganan Dokter</h3>
+                        <p class="text-xs text-slate-500">Daftar hewan pasien yang membutuhkan pemeriksaan / evaluasi ulang</p>
+                    </div>
+                    <a href="patients.html" class="text-xs font-bold text-vetgreen-800 hover:underline flex items-center gap-1">
+                        Lihat Semua Pasien <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </a>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-[11px] uppercase tracking-wider text-slate-500 font-bold">
+                                <th class="px-5 py-3">Kode Pasien</th>
+                                <th class="px-5 py-3">Nama Hewan</th>
+                                <th class="px-5 py-3">Pemilik</th>
+                                <th class="px-5 py-3">Status Klinis</th>
+                                <th class="px-5 py-3">Kunjungan Terakhir</th>
+                                <th class="px-5 py-3 text-right">Aksi Pemeriksaan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="doctorQueueTbody" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="6" class="px-5 py-6 text-center text-xs text-slate-400">Memuat data antrean pasien...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script type="module" src="/src/doctor_dashboard_page.ts"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "patients": {
+      "title": "Patient",
+      "description": "Pet patient medical records",
+      "properties": {
+        "name": { "type": "string" },
+        "species": { "type": "string" },
+        "breed": { "type": "string" },
+        "gender": { "type": "string" },
+        "age": { "type": "string" },
+        "owner_name": { "type": "string" },
+        "phone": { "type": "string" },
+        "address": { "type": "string" },
+        "status": { "type": "string" },
+        "weight": { "type": "string" },
+        "temperature": { "type": "string" },
+        "heart_rate": { "type": "string" },
+        "allergies": { "type": "string" },
+        "doctor_name": { "type": "string" },
+        "last_visit": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "species", "owner_name"]
+    },
+    "clinical_notes": {
+      "title": "Clinical Note",
+      "description": "Clinical visit and treatment notes",
+      "properties": {
+        "patient_id": { "type": "string" },
+        "title": { "type": "string" },
+        "detail": { "type": "string" },
+        "icon": { "type": "string" },
+        "note_date": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["patient_id", "title", "detail"]
+    },
+    "medications": {
+      "title": "Medication",
+      "description": "Active prescription medications for pets",
+      "properties": {
+        "patient_id": { "type": "string" },
+        "name": { "type": "string" },
+        "dose": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["patient_id", "name"]
+    },
+    "doctors": {
+      "title": "Doctor",
+      "description": "Veterinary clinical staff",
+      "properties": {
+        "name": { "type": "string" },
+        "specialization": { "type": "string" }
+      },
+      "required": ["name"]
+    }
+  }
+}

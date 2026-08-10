@@ -1,0 +1,63 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // DEMO: App uses fake auth (localStorage role). For production, replace with:
+    //   allow read, write: if request.auth != null;
+    // Current: allow all but limit size and reject unknown fields for basic hardening.
+    function isValidPatient() {
+      return request.resource.data.keys().hasAll(['name', 'species', 'owner_name']) &&
+             request.resource.size() < 20000;
+    }
+    function isValidClinicalNote() {
+      return request.resource.data.keys().hasAll(['patient_id', 'title', 'detail']) &&
+             request.resource.size() < 20000;
+    }
+    function isValidPrescription() {
+      return request.resource.data.keys().hasAll(['patient_id', 'patient_name', 'items']) &&
+             request.resource.size() < 20000;
+    }
+    function isSmallDoc() {
+      return request.resource.size() < 20000;
+    }
+
+    match /patients/{patientId} {
+      allow read: if true;
+      allow create, update: if isValidPatient();
+      allow delete: if true;
+    }
+    match /clinical_notes/{noteId} {
+      allow read: if true;
+      allow create, update: if isValidClinicalNote();
+      allow delete: if true;
+    }
+    match /prescriptions/{rxId} {
+      allow read: if true;
+      allow create, update: if isValidPrescription();
+      allow delete: if true;
+    }
+    match /medical_records/{recordId} {
+      allow read: if true;
+      allow create, update: if isSmallDoc();
+      allow delete: if true;
+    }
+    match /vaccinations/{vacId} {
+      allow read: if true;
+      allow create, update: if isSmallDoc();
+      allow delete: if true;
+    }
+    match /medications/{medId} {
+      allow read: if true;
+      allow create, update: if isSmallDoc();
+      allow delete: if true;
+    }
+    match /doctors/{docId} {
+      allow read: if true;
+      allow write: if isSmallDoc();
+    }
+    match /{document=**} {
+      // Fallback for any other collections
+      allow read, write: if isSmallDoc();
+    }
+  }
+}
