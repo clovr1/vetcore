@@ -233,9 +233,14 @@
                                 <textarea id="doctorAssessment" rows="8" placeholder="Tuliskan catatan klinis, observasi, diagnosa, dan rencana penanganan..." class="input-field resize-none text-sm leading-relaxed"></textarea>
                                 <div class="flex items-center justify-between mt-3">
                                     <span class="text-[11px] text-slate-400">Terakhir: <span id="assessmentLastUpdate">-</span></span>
-                                    <button id="saveAssessmentBtn" class="btn btn-primary text-xs">
-                                        <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
-                                    </button>
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="sendToFO()" class="btn btn-secondary text-xs flex items-center gap-1">
+                                            <i data-lucide="send" class="w-3.5 h-3.5"></i> Kirim ke FO
+                                        </button>
+                                        <button id="saveAssessmentBtn" class="btn btn-primary text-xs">
+                                            <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

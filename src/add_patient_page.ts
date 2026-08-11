@@ -1,4 +1,4 @@
-import { seedDatabaseIfEmpty, createPatient, addClinicalNote, getAllUniqueOwners } from './firebase';
+import { seedDatabaseIfEmpty, createPatient, addMedicalRecord, getAllUniqueOwners } from './firebase';
 import { initSidebarProfile } from './auth';
 
 const BREEDS: Record<string, string[]> = {
@@ -189,7 +189,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (initialComplaint) {
-          await addClinicalNote(newId, 'Pendaftaran & Keluhan Awal', initialComplaint);
+          await addMedicalRecord({
+            patient_id: newId,
+            mrn: '#VET-000',
+            patient_name: name,
+            date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+            time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+            subjective: initialComplaint,
+            objective: '',
+            diagnosis: [],
+            treatments: [],
+            doctor_name: doctor_name || 'Front Desk',
+            doctor_initials: (doctor_name || 'FD').replace(/^Dr\.\s*/i, '').split(' ').map((s: string) => s[0]).join('').substring(0, 2).toUpperCase(),
+            notes: ''
+          });
         }
 
         window.location.href = `patient.html?id=${newId}`;

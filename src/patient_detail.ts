@@ -2,8 +2,8 @@ import {
   seedDatabaseIfEmpty,
   getPatientById,
   subscribePatients,
-  subscribeClinicalNotes,
-  addClinicalNote,
+  subscribeMedicalRecords,
+  addMedicalRecord,
   subscribeMedications,
   addMedication,
   removeMedication,
@@ -24,7 +24,8 @@ import {
   Patient,
   Prescription,
   PrescriptionItem,
-  Vaccination
+  Vaccination,
+  MedicalRecord
 } from './firebase';
 import { initSidebarProfile, getCurrentUser } from './auth';
 
@@ -32,6 +33,13 @@ let currentPatientId: string = '';
 let currentPatient: Patient | null = null;
 let patientPrescriptions: Prescription[] = [];
 let isDoctor: boolean = false;
+
+function getInitials(name: string): string {
+  if (!name) return 'DR';
+  const parts = name.replace(/^Dr\.\s*/i, '').trim().split(' ');
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
   initSidebarProfile();
@@ -112,12 +120,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!assessment.trim()) { alert('Isi penilaian dokter.'); return; }
       try {
         const todayStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-        await addClinicalNote({
+        await addMedicalRecord({
           patient_id: currentPatientId,
-          title: 'Penilaian Dokter',
-          detail: assessment,
-          note_date: todayStr,
-          doctor_name: user.name
+          mrn: currentPatient?.code || '#VET-000',
+          patient_name: currentPatient?.name || '',
+          date: todayStr,
+          time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+          subjective: assessment,
+          objective: '',
+          diagnosis: [],
+          treatments: [],
+          doctor_name: user.name,
+          doctor_initials: getInitials(user.name),
+          notes: ''
         });
         showToastNotification('Penilaian disimpan!');
         const lastUpdate = document.getElementById('assessmentLastUpdate');
@@ -266,42 +281,49 @@ async function loadPatientDetails(patientId: string) {
 }
 
 function setupRealtimeSubscriptions(patientId: string) {
-  // Clinical notes
-  subscribeClinicalNotes(patientId, (notes) => {
+  // Medical records (SOAP)
+  subscribeMedicalRecords((records) => {
+    const patientRecords = records.filter(r => r.patient_id === patientId)
+      .sort((a, b) => (b.created_at?.seconds || 0) - (a.created_at?.seconds || 0));
+
     // Doctor: complaint section
     if (isDoctor) {
       const complaintSec = document.getElementById('docComplaintSection');
       const complaintText = document.getElementById('docComplaintText');
       const complaintMeta = document.getElementById('docComplaintMeta');
-      if (notes.length > 0 && complaintSec && complaintText) {
-        const latest = notes[0];
-        complaintText.textContent = '"' + (latest.detail || 'Tidak ada detail') + '"';
-        if (complaintMeta) complaintMeta.textContent = 'Dicatat: ' + (latest.doctor_name || 'Front Desk') + ' (' + (latest.note_date || '') + ')';
+      if (patientRecords.length > 0 && complaintSec && complaintText) {
+        const latest = patientRecords[0];
+        complaintText.textContent = '"' + (latest.subjective || 'Tidak ada detail') + '"';
+        if (complaintMeta) complaintMeta.textContent = 'Dicatat: ' + (latest.doctor_name || 'Front Desk') + ' (' + (latest.date || '') + ')';
         complaintSec.classList.remove('hidden');
       }
     }
 
     // Both views: notes container
-    const renderNotesHtml = (notes: any[]) => {
-      if (notes.length === 0) {
+    const renderNotesHtml = (recs: MedicalRecord[]) => {
+      if (recs.length === 0) {
         return '<div class="p-4 text-xs text-slate-400 bg-slate-50 rounded-xl border border-slate-100 text-center">Belum ada rekam medis.</div>';
       }
-      return notes.map(note => {
-        let titleText = note.title || 'Catatan Medis';
-        const dateStr = note.note_date || 'Hari ini';
-        let severityBadge = '';
-        const sevMatch = titleText.match(/\[(Mild|Moderate|Severe)\]/i);
-        if (sevMatch) {
-          const sev = sevMatch[1];
-          titleText = titleText.replace(/\[(Mild|Moderate|Severe)\]/i, '').trim();
-          severityBadge = sev.toLowerCase() === 'mild' ? '<span class="badge badge-emerald">Mild</span>' : sev.toLowerCase() === 'moderate' ? '<span class="badge badge-amber">Moderate</span>' : '<span class="badge badge-rose">Severe</span>';
-        }
+      return recs.map(rec => {
+        const diagList = (rec.diagnosis || []).map(d => '• ' + d).join('<br>');
+        const treatList = (rec.treatments || []).map(t => '• ' + t).join('<br>');
         return '<div class="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-2 transition-all hover:bg-white hover:shadow-xs">' +
-          '<div class="flex items-center justify-between gap-2"><div class="flex items-center gap-2 flex-wrap"><span class="w-2 h-2 rounded-full bg-vetgreen-800 shrink-0"></span><h3 class="text-xs font-bold text-slate-900">' + escapeHtml(titleText) + '</h3>' + severityBadge + '</div><span class="text-[11px] text-slate-400 font-mono shrink-0">' + escapeHtml(dateStr) + '</span></div>' +
-          '<div class="text-xs text-slate-600 leading-relaxed whitespace-pre-line pl-4 border-l-2 border-slate-200 my-1">' + escapeHtml(note.detail || '') + '</div></div>';
+          '<div class="flex items-center justify-between gap-2"><div class="flex items-center gap-2 flex-wrap"><span class="w-2 h-2 rounded-full bg-vetgreen-800 shrink-0"></span><h3 class="text-xs font-bold text-slate-900">Rekam Medis</h3></div><span class="text-[11px] text-slate-400 font-mono shrink-0">' + escapeHtml(rec.date || 'Hari ini') + '</span></div>' +
+          '<div class="pl-4 border-l-2 border-slate-200 my-1 space-y-1">' +
+            '<div class="text-xs text-slate-600"><b>S:</b> ' + escapeHtml(rec.subjective || '-') + '</div>' +
+            (rec.objective ? '<div class="text-xs text-slate-600"><b>O:</b> ' + escapeHtml(rec.objective) + '</div>' : '') +
+            '<div class="text-xs text-slate-600"><b>Diagnosa:</b> ' + (diagList || '-') + '</div>' +
+            '<div class="text-xs text-slate-600"><b>Pengobatan:</b> ' + (treatList || '-') + '</div>' +
+            (rec.notes ? '<div class="text-xs text-slate-600"><b>Catatan:</b> ' + escapeHtml(rec.notes) + '</div>' : '') +
+          '</div>' +
+          '<div class="flex items-center gap-2 mt-2">' +
+            '<span class="w-5 h-5 rounded-full bg-[#044e3a] text-white flex items-center justify-center text-[9px] font-bold shrink-0">' + escapeHtml(rec.doctor_initials || 'DR') + '</span>' +
+            '<span class="text-[11px] font-semibold text-slate-700">' + escapeHtml(rec.doctor_name || '-') + '</span>' +
+          '</div>' +
+          '</div>';
       }).join('');
     };
-    const notesHtml = renderNotesHtml(notes);
+    const notesHtml = renderNotesHtml(patientRecords);
     const docNotes = document.getElementById('notesContainer');
     const foNotes = document.getElementById('foNotesContainer');
     if (docNotes) docNotes.innerHTML = notesHtml;
@@ -561,3 +583,14 @@ function showToastNotification(msg: string) {
 (window as any).openPatientRxPreview = openPatientRxPreview;
 (window as any).deletePatientRx = deletePatientRx;
 (window as any).toggleMedForm = toggleMedForm;
+
+(window as any).sendToFO = () => {
+  const toast = document.getElementById('toastNotification');
+  const toastText = document.getElementById('toastText');
+  if (toast && toastText) {
+    toastText.textContent = 'Rekam medis berhasil dikirim ke Front Office!';
+    toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+    setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none'); }, 2500);
+  }
+  setTimeout(() => { window.location.href = 'reports.html'; }, 1500);
+};

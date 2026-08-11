@@ -1,13 +1,16 @@
 import { seedDatabaseIfEmpty, subscribePatients, escapeHtml, Patient } from './firebase';
-import { initSidebarProfile } from './auth';
+import { initSidebarProfile, getCurrentUser } from './auth';
 
 let allPatients: Patient[] = [];
 let currentPage = 1;
 const pageSize = 10;
 let currentViewMode: 'owner' | 'pet' = 'owner';
+let isDoctor = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
   initSidebarProfile();
+  const user = getCurrentUser();
+  isDoctor = user.role === 'doctor';
   await seedDatabaseIfEmpty();
 
   const searchInput = document.getElementById('searchInput') as HTMLInputElement | null;
@@ -151,7 +154,9 @@ function renderTable() {
 
     pageItems.forEach(g => {
       const tr = document.createElement('tr');
-      tr.className = 'patient-row hover:bg-slate-50/80 transition-colors';
+      const allHealthy = g.pets.every(p => p.status === 'Sehat' || p.status === 'Selesai');
+      const isDisabled = !isDoctor && allHealthy;
+      tr.className = 'patient-row hover:bg-slate-50/80 transition-colors' + (isDisabled ? ' opacity-50' : '');
 
       const allSpeciesStr = Array.from(new Set(g.pets.map(p => p.species))).join(', ');
       const displayPets = g.pets.slice(0, 3);
@@ -171,7 +176,9 @@ function renderTable() {
               if (sp.includes('kucing') || sp.includes('cat')) icon = '🐱';
               else if (sp.includes('anjing') || sp.includes('dog')) icon = '🐶';
               else if (sp.includes('kelinci') || sp.includes('rabbit')) icon = '🐰';
-              return `<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 border border-slate-100 rounded text-[11px] text-slate-600">${icon} ${escapeHtml(p.name)}</span>`;
+              const petDone = p.status === 'Sehat' || p.status === 'Selesai';
+              const badge = !isDoctor && petDone ? '<span class="badge badge-slate text-[9px] ml-1">Selesai</span>' : '';
+              return `<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-50 border border-slate-100 rounded text-[11px] text-slate-600">${icon} ${escapeHtml(p.name)}${badge}</span>`;
             }).join('')}
             ${morePetsCount > 0 ? `<span class="text-[10px] text-slate-400">+${morePetsCount}</span>` : ''}
           </div>
@@ -179,7 +186,10 @@ function renderTable() {
         <td class="px-5 py-4 text-slate-600 text-xs">${escapeHtml(g.latest_visit || '-')}</td>
         <td class="px-5 py-4 font-mono text-[11px] text-slate-500">${escapeHtml(g.phone)}</td>
         <td class="px-5 py-4 text-right">
-          <a href="patient.html?id=${escapeHtml(g.pets[0].id)}" class="text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">Lihat →</a>
+          ${isDisabled
+            ? '<span class="text-xs text-slate-400 font-medium">Selesai</span>'
+            : `<a href="patient.html?id=${escapeHtml(g.pets[0].id)}" class="text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">Lihat →</a>`
+          }
         </td>
       `;
 
@@ -226,10 +236,18 @@ function renderTable() {
 
     pageItems.forEach(p => {
       const tr = document.createElement('tr');
-      tr.className = 'patient-row hover:bg-slate-50/80 cursor-pointer transition-colors';
-      tr.onclick = () => {
-        window.location.href = `patient.html?id=${p.id}`;
-      };
+      const isHealthy = p.status === 'Sehat' || p.status === 'Selesai';
+      const isDisabled = !isDoctor && isHealthy;
+      tr.className = 'patient-row hover:bg-slate-50/80 cursor-pointer transition-colors' + (isDisabled ? ' opacity-50' : '');
+      if (!isDisabled) {
+        tr.onclick = () => {
+          window.location.href = `patient.html?id=${p.id}`;
+        };
+      }
+
+      const statusBadge = isDisabled
+        ? '<span class="badge badge-slate text-[10px]">Selesai</span>'
+        : `<span class="badge badge-emerald text-[10px]">${escapeHtml(p.status || '-')}</span>`;
 
       tr.innerHTML = `
         <td class="px-5 py-4 font-mono text-[11px] text-slate-400">${escapeHtml(p.code || '#PT-0000')}</td>
@@ -240,13 +258,17 @@ function renderTable() {
         <td class="px-5 py-4">
           <div class="flex items-center gap-1.5">
             <span class="serif-title font-bold text-sm text-slate-900">${escapeHtml(p.name)}</span>
+            ${statusBadge}
           </div>
           <div class="text-[11px] text-slate-500 mt-0.5">${escapeHtml(p.species)} / ${escapeHtml(p.breed || '-')}</div>
         </td>
         <td class="px-5 py-4 text-slate-600 text-xs">${escapeHtml(p.last_visit || '-')}</td>
         <td class="px-5 py-4 font-mono text-[11px] text-slate-500">${escapeHtml(p.phone || '-')}</td>
         <td class="px-5 py-4 text-right">
-          <a href="patient.html?id=${escapeHtml(p.id)}" class="text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">Lihat →</a>
+          ${isDisabled
+            ? '<span class="text-xs text-slate-400 font-medium">Selesai</span>'
+            : `<a href="patient.html?id=${escapeHtml(p.id)}" class="text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">Lihat →</a>`
+          }
         </td>
       `;
 

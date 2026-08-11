@@ -113,28 +113,33 @@
                         <h1 id="recordPetTitle" class="serif-title text-2xl font-bold text-slate-900">Rekam Medis</h1>
                         <p id="recordPetSubtitle" class="text-xs text-slate-500 mt-0.5">Riwayat pemeriksaan klinis, diagnosa, dan pengobatan.</p>
                     </div>
-                    <button id="addRecordBtn" onclick="openAddRecordModal()" class="btn btn-primary flex items-center gap-2 hidden">
-                        <i data-lucide="plus" class="w-4 h-4"></i> Tambah Rekam Medis
-                    </button>
+                    <div class="flex items-center gap-3">
+                        <button id="addRecordBtn" onclick="openAddRecordModal()" class="btn btn-primary flex items-center gap-2 hidden">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Tambah Rekam Medis
+                        </button>
+                        <button id="sendToFOBtn" onclick="sendToFO()" class="btn btn-secondary flex items-center gap-2 hidden">
+                            <i data-lucide="send" class="w-4 h-4"></i> Kirim ke Front Office
+                        </button>
+                    </div>
                 </div>
 
                 <div class="card overflow-hidden">
-                    <div class="bg-slate-50/70 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
-                        <h2 class="serif-title font-bold text-lg text-slate-900">REKAM MEDIS</h2>
-                        <span id="recordMrnLabel" class="font-mono text-xs font-semibold text-slate-500 uppercase tracking-wide"></span>
+                    <div class="bg-slate-50/70 px-5 py-3.5 border-b border-slate-200 flex items-center justify-between">
+                        <h2 class="serif-title font-bold text-base text-slate-900">REKAM MEDIS</h2>
+                        <span id="recordMrnLabel" class="font-mono text-[11px] font-semibold text-slate-500 uppercase tracking-wide"></span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="bg-slate-50/50 text-slate-700 text-xs font-bold border-b border-slate-200">
-                                    <th class="px-5 py-3.5 w-32">Tanggal</th>
-                                    <th class="px-5 py-3.5">Anamnesa</th>
-                                    <th class="px-5 py-3.5 w-44">Diagnosa</th>
-                                    <th class="px-5 py-3.5">Pengobatan</th>
-                                    <th class="px-5 py-3.5 w-52">Catatan</th>
+                                <tr class="bg-slate-50/50 text-slate-600 text-[11px] font-bold uppercase tracking-wider border-b border-slate-200">
+                                    <th class="px-4 py-2.5 w-28">Tanggal</th>
+                                    <th class="px-4 py-2.5 w-[30%]">Anamnesa (S/O)</th>
+                                    <th class="px-4 py-2.5 w-[20%]">Diagnosa</th>
+                                    <th class="px-4 py-2.5 w-[22%]">Pengobatan</th>
+                                    <th class="px-4 py-2.5 w-[18%]">Dokter</th>
                                 </tr>
                             </thead>
-                            <tbody id="recordTableBody" class="divide-y divide-slate-200/80"></tbody>
+                            <tbody id="recordTableBody" class="divide-y divide-slate-100"></tbody>
                         </table>
                     </div>
                 </div>
@@ -145,21 +150,49 @@
 
     <!-- Modal: Tambah Rekam Medis -->
     <div id="addRecordModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
-        <div class="card w-full max-w-lg shadow-xl overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <div class="card w-full max-w-2xl shadow-xl overflow-hidden max-h-[90vh] overflow-y-auto">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 sticky top-0 z-10">
                 <h3 class="serif-title font-bold text-base text-slate-900">Tambah Rekam Medis</h3>
                 <button onclick="closeAddRecordModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
             <form id="addRecordForm" class="p-6 space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Judul / Jenis Pemeriksaan *</label>
-                    <input type="text" id="recTitle" required placeholder="Contoh: Pemeriksaan Rutin, Kontrol Lanjutan" class="input-field">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Pemeriksaan</label>
+                        <input type="date" id="recDate" required class="input-field bg-slate-50 cursor-not-allowed" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Dokter Pemeriksa *</label>
+                        <select id="recDoctor" required class="input-field">
+                            <option value="" disabled selected>-- Pilih Dokter --</option>
+                            <option value="Dr. Sarah Jenkins">Dr. Sarah Jenkins</option>
+                            <option value="Dr. Michael Lee">Dr. Michael Lee</option>
+                            <option value="Dr. Amanda">Dr. Amanda</option>
+                            <option value="Dr. Smith">Dr. Smith</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Detail / Catatan Klinis *</label>
-                    <textarea id="recDetail" rows="4" required placeholder="Tuliskan detail pemeriksaan, keluhan, temuan fisik, diagnosa awal, dll." class="input-field resize-none"></textarea>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Anamnesa Subyektif (S) *</label>
+                    <textarea id="recSubjective" rows="2" required placeholder="S: Pemilik melaporkan hewan lemas, muntah, nafsu makan turun..." class="input-field resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Anamnesa Obyektif (O)</label>
+                    <textarea id="recObjective" rows="2" placeholder="O: T: 39.2°C, HR: 140, RR: 30. Dehidrasi ringan..." class="input-field resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Diagnosa (pisahkan dengan koma) *</label>
+                    <input type="text" id="recDiagnosis" required placeholder="Contoh: Gastroenteritis, Dehidrasi Ringan" class="input-field">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Pengobatan / Tindakan (1 per baris)</label>
+                    <textarea id="recTreatments" rows="3" placeholder="Cerenia 10mg/ml - 0.4ml SC&#10;LRS SubQ fluids - 100ml&#10;Rx: FortiFlora (1 pkt daily x 5d)" class="input-field resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Tambahan</label>
+                    <textarea id="recNotes" rows="2" placeholder="Anjuran diet, recheck, dsb..." class="input-field resize-none"></textarea>
                 </div>
                 <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
                     <button type="button" onclick="closeAddRecordModal()" class="btn btn-secondary">Batal</button>

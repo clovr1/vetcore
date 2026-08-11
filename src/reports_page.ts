@@ -1,16 +1,16 @@
 import {
   seedDatabaseIfEmpty,
   subscribePatients,
-  subscribeAllClinicalNotes,
-  addClinicalNote,
+  subscribeMedicalRecords,
+  addMedicalRecord,
   escapeHtml,
   Patient,
-  ClinicalNote
+  MedicalRecord
 } from './firebase';
 import { initSidebarProfile, getCurrentUser } from './auth';
 
 let allPatients: Patient[] = [];
-let allNotes: ClinicalNote[] = [];
+let allMedicalRecords: MedicalRecord[] = [];
 let selectedOwner: string = '';
 let selectedPatientId: string = '';
 let isDoctor: boolean = false;
@@ -82,8 +82,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderOwnerList();
   });
 
-  subscribeAllClinicalNotes((notes) => {
-    allNotes = notes;
+  subscribeMedicalRecords((records) => {
+    allMedicalRecords = records;
+    renderOwnerList();
     if (selectedPatientId) renderPetRecord();
   });
 
@@ -108,24 +109,34 @@ function renderOwnerList() {
   const searchInput = document.getElementById('ownerSearchInput') as HTMLInputElement | null;
   const query = (searchInput?.value || '').toLowerCase();
 
-  const groups = getOwnerGroups().filter(g => {
+  let groups = getOwnerGroups();
+
+  if (!isDoctor) {
+    const petIdsWithRecords = new Set(allMedicalRecords.map(r => r.patient_id));
+    groups = groups.map(g => ({
+      ...g,
+      pets: g.pets.filter(p => petIdsWithRecords.has(p.id || ''))
+    })).filter(g => g.pets.length > 0);
+  }
+
+  const filteredGroups = groups.filter(g => {
     if (!query) return true;
     return g.owner_name.toLowerCase().includes(query) ||
       g.pets.some(p => p.name.toLowerCase().includes(query));
   });
 
-  if (groups.length === 0) {
+  if (filteredGroups.length === 0) {
     container.innerHTML = `
       <div class="p-12 text-center text-slate-400">
         <i data-lucide="users" class="w-10 h-10 mx-auto text-slate-300 mb-3"></i>
-        <p class="text-sm font-semibold text-slate-600">Tidak ada pemilik ditemukan</p>
-        <p class="text-xs text-slate-400 mt-1">Belum ada data pasien terdaftar.</p>
+        <p class="text-sm font-semibold text-slate-600">${!isDoctor ? 'Belum ada rekam medis dari dokter' : 'Tidak ada pemilik ditemukan'}</p>
+        <p class="text-xs text-slate-400 mt-1">${!isDoctor ? 'Rekam medis akan muncul setelah dokter mencatat kunjungan.' : 'Belum ada data pasien terdaftar.'}</p>
       </div>`;
     if ((window as any).lucide) (window as any).lucide.createIcons();
     return;
   }
 
-  container.innerHTML = groups.map(g => {
+  container.innerHTML = filteredGroups.map(g => {
     const petCount = g.pets.length;
     const petListStr = g.pets.map(p => p.name).join(', ');
     return `
@@ -152,7 +163,12 @@ function renderPetList() {
   const container = document.getElementById('petListContainer');
   if (!container) return;
 
-  const pets = allPatients.filter(p => (p.owner_name || '').toLowerCase().trim() === selectedOwner.toLowerCase().trim());
+  let pets = allPatients.filter(p => (p.owner_name || '').toLowerCase().trim() === selectedOwner.toLowerCase().trim());
+
+  if (!isDoctor) {
+    const petIdsWithRecords = new Set(allMedicalRecords.map(r => r.patient_id));
+    pets = pets.filter(p => petIdsWithRecords.has(p.id || ''));
+  }
 
   if (pets.length === 0) {
     container.innerHTML = `
@@ -206,44 +222,62 @@ function renderPetRecord() {
   const code = patient.code || '#VET-000';
   if (mrnLabel) mrnLabel.textContent = `MRN: ${code}`;
 
-  const patientNotes = allNotes.filter(n => n.patient_id === selectedPatientId)
+  const patientRecords = allMedicalRecords.filter(r => r.patient_id === selectedPatientId)
     .sort((a, b) => (b.created_at?.seconds || 0) - (a.created_at?.seconds || 0));
 
-  if (patientNotes.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="5" class="py-12 text-center text-slate-400 bg-slate-50/50">
-          <i data-lucide="file-x" class="w-8 h-8 mx-auto text-slate-300 mb-2"></i>
-          <p class="text-xs font-semibold text-slate-600">Belum ada rekam medis</p>
-          <p class="text-[11px] text-slate-400 mt-1">Rekam medis akan muncul setelah dokter mencatat kunjungan.</p>
-        </td>
-      </tr>`;
+  if (patientRecords.length === 0) {
+    if (isDoctor) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="py-10 text-center text-slate-400 bg-slate-50/30">
+            <i data-lucide="file-x" class="w-7 h-7 mx-auto text-slate-300 mb-1.5"></i>
+            <p class="text-xs font-semibold text-slate-500">Belum ada rekam medis</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Klik "Tambah Rekam Medis" untuk mencatat kunjungan.</p>
+          </td>
+        </tr>`;
+    } else {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="py-10 text-center text-slate-400 bg-slate-50/30">
+            <i data-lucide="info" class="w-7 h-7 mx-auto text-slate-300 mb-1.5"></i>
+            <p class="text-xs font-semibold text-slate-500">Belum ada rekam medis dari dokter</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Rekam medis akan muncul setelah dokter mencatat dan mengirim ke Front Office.</p>
+          </td>
+        </tr>`;
+    }
     if ((window as any).lucide) (window as any).lucide.createIcons();
     return;
   }
 
-  tbody.innerHTML = patientNotes.map(note => {
-    const doctorInitials = getInitials(note.doctor_name || '');
+  tbody.innerHTML = patientRecords.map(rec => {
+    const doctorInitials = getInitials(rec.doctor_name || '');
+    const diagnosisList = (rec.diagnosis || []).map(d => `<span class="inline-block bg-red-50 text-red-700 text-[10px] font-semibold px-1.5 py-0.5 rounded-md mr-1 mb-0.5">${escapeHtml(d)}</span>`).join('');
+    const treatmentsList = (rec.treatments || []).map(t => `<div class="text-[11px] text-slate-700 leading-relaxed">• ${escapeHtml(t)}</div>`).join('');
+    const anamnesaHtml = rec.objective
+      ? `<div class="text-[11px] text-slate-700 leading-relaxed"><span class="font-bold text-slate-800">S:</span> ${escapeHtml(rec.subjective)}</div><div class="text-[11px] text-slate-700 leading-relaxed mt-0.5"><span class="font-bold text-slate-800">O:</span> ${escapeHtml(rec.objective)}</div>`
+      : `<div class="text-[11px] text-slate-700 leading-relaxed">${escapeHtml(rec.subjective)}</div>`;
+
     return `
-      <tr class="hover:bg-slate-50/70 transition-colors">
-        <td class="px-5 py-4 align-top w-32">
-          <div class="font-bold text-xs text-slate-900">${escapeHtml(note.note_date || '-')}</div>
+      <tr class="hover:bg-slate-50/50 transition-colors">
+        <td class="px-4 py-3 align-top">
+          <div class="text-xs font-bold text-slate-900">${escapeHtml(rec.date || '-')}</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">${escapeHtml(rec.time || '')}</div>
         </td>
-        <td class="px-5 py-4 align-top">
-          <div class="text-xs text-slate-800 leading-relaxed font-semibold mb-1">${escapeHtml(note.title || 'Catatan Klinis')}</div>
-          <div class="text-xs text-slate-600 leading-relaxed whitespace-pre-line">${escapeHtml(note.detail || '-')}</div>
+        <td class="px-4 py-3 align-top">
+          ${anamnesaHtml}
         </td>
-        <td class="px-5 py-4 align-top w-44">
-          <span class="text-xs text-slate-600">-</span>
+        <td class="px-4 py-3 align-top">
+          ${diagnosisList || '<span class="text-[11px] text-slate-300">-</span>'}
         </td>
-        <td class="px-5 py-4 align-top">
-          <span class="text-xs text-slate-600">-</span>
+        <td class="px-4 py-3 align-top">
+          ${treatmentsList || '<span class="text-[11px] text-slate-300">-</span>'}
         </td>
-        <td class="px-5 py-4 align-top w-52">
-          <div class="flex items-center gap-2">
-            <span class="w-6 h-6 rounded-full bg-[#044e3a] text-white flex items-center justify-center text-[10px] font-bold shrink-0">${escapeHtml(doctorInitials)}</span>
-            <span class="text-xs font-semibold text-slate-800 truncate">${escapeHtml(note.doctor_name || '-')}</span>
+        <td class="px-4 py-3 align-top">
+          <div class="flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-[#044e3a] text-white flex items-center justify-center text-[9px] font-bold shrink-0">${escapeHtml(doctorInitials)}</span>
+            <span class="text-[11px] font-semibold text-slate-700">${escapeHtml(rec.doctor_name || '-')}</span>
           </div>
+          ${rec.notes ? `<div class="text-[10px] text-slate-500 mt-1 italic">${escapeHtml(rec.notes)}</div>` : ''}
         </td>
       </tr>`;
   }).join('');
@@ -275,6 +309,9 @@ function renderPetRecord() {
   const addBtn = document.getElementById('addRecordBtn');
   if (addBtn) addBtn.classList.toggle('hidden', !isDoctor);
 
+  const sendBtn = document.getElementById('sendToFOBtn');
+  if (sendBtn) sendBtn.classList.toggle('hidden', !isDoctor);
+
   const patient = allPatients.find(p => p.id === patientId);
   const titleEl = document.getElementById('recordPetTitle');
   const subtitleEl = document.getElementById('recordPetSubtitle');
@@ -284,6 +321,17 @@ function renderPetRecord() {
   }
 
   renderPetRecord();
+};
+
+(window as any).sendToFO = () => {
+  const toast = document.getElementById('toastNotification');
+  const toastText = document.getElementById('toastText');
+  if (toast && toastText) {
+    toastText.textContent = 'Rekam medis berhasil dikirim ke Front Office!';
+    toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+    setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none'); }, 2500);
+  }
+  setTimeout(() => { window.location.href = 'reports.html'; }, 1500);
 };
 
 (window as any).backToOwners = () => {
@@ -304,6 +352,8 @@ function renderPetRecord() {
 
 (window as any).openAddRecordModal = () => {
   document.getElementById('addRecordModal')?.classList.remove('hidden');
+  const dateInput = document.getElementById('recDate') as HTMLInputElement | null;
+  if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
 };
 
 (window as any).closeAddRecordModal = () => {
@@ -314,12 +364,25 @@ function renderPetRecord() {
 async function handleSaveRecord() {
   if (!selectedPatientId) return;
   const user = getCurrentUser();
-  const titleInput = document.getElementById('recTitle') as HTMLInputElement | null;
-  const detailInput = document.getElementById('recDetail') as HTMLTextAreaElement | null;
+  const patient = allPatients.find(p => p.id === selectedPatientId);
+  if (!patient) return;
+
+  const dateInput = document.getElementById('recDate') as HTMLInputElement | null;
+  const doctorSelect = document.getElementById('recDoctor') as HTMLSelectElement | null;
+  const subjInput = document.getElementById('recSubjective') as HTMLTextAreaElement | null;
+  const objInput = document.getElementById('recObjective') as HTMLTextAreaElement | null;
+  const diagInput = document.getElementById('recDiagnosis') as HTMLInputElement | null;
+  const treatInput = document.getElementById('recTreatments') as HTMLTextAreaElement | null;
+  const notesInput = document.getElementById('recNotes') as HTMLTextAreaElement | null;
   const saveBtn = document.getElementById('saveRecBtn') as HTMLButtonElement | null;
 
-  if (!titleInput || !detailInput || !titleInput.value.trim() || !detailInput.value.trim()) {
-    alert('Judul dan detail wajib diisi.');
+  if (!subjInput || !diagInput || !subjInput.value.trim() || !diagInput.value.trim()) {
+    alert('Anamnesa (S) dan Diagnosa wajib diisi.');
+    return;
+  }
+
+  if (dateInput?.value && new Date(dateInput.value) > new Date()) {
+    alert('Tanggal pemeriksaan tidak boleh masa depan.');
     return;
   }
 
@@ -329,8 +392,39 @@ async function handleSaveRecord() {
   }
 
   try {
-    const todayStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-    await addClinicalNote(selectedPatientId, titleInput.value.trim(), detailInput.value.trim(), todayStr, user.name);
+    const rawDate = dateInput?.value;
+    let formattedDate = 'Hari ini';
+    if (rawDate) {
+      const d = new Date(rawDate);
+      formattedDate = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    const diagnosisList = diagInput.value.trim().split(',').map(s => s.trim()).filter(Boolean);
+    const treatmentsList = treatInput?.value.trim() ? treatInput.value.split('\n').map(s => s.trim()).filter(Boolean) : [];
+    const doctorName = doctorSelect?.value || user.name;
+
+    const getInitials = (name: string): string => {
+      if (!name) return 'DR';
+      const parts = name.replace(/^Dr\.\s*/i, '').trim().split(' ');
+      if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    };
+
+    await addMedicalRecord({
+      mrn: patient.code || '#VET-000',
+      patient_name: patient.name,
+      patient_id: selectedPatientId,
+      date: formattedDate,
+      time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      subjective: subjInput.value.trim(),
+      objective: objInput?.value.trim() || '',
+      diagnosis: diagnosisList,
+      treatments: treatmentsList,
+      doctor_name: doctorName,
+      doctor_initials: getInitials(doctorName),
+      notes: notesInput?.value.trim() || ''
+    });
+
     (window as any).closeAddRecordModal();
   } catch (err) {
     console.error('Failed to save record:', err);
