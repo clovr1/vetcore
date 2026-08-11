@@ -743,6 +743,7 @@ export async function addOneSamplePatient() {
 }
 
 export async function seedMultiPetOwnerIfMissing() {
+  if (localStorage.getItem('patients_cleared') === 'true') return;
   try {
     const snap = await getDocs(collection(db, 'patients'));
     const rinaPets = snap.docs.filter(d => (d.data().owner_name || '').toLowerCase() === 'rina wijaya');
