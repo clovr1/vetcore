@@ -1,6 +1,43 @@
 import { seedDatabaseIfEmpty, createPatient, addClinicalNote, getAllUniqueOwners } from './firebase';
 import { initSidebarProfile } from './auth';
 
+const BREEDS: Record<string, string[]> = {
+  'Anjing': [
+    'Golden Retriever', 'Labrador Retriever', 'German Shepherd', 'Bulldog', 'Poodle',
+    'Beagle', 'Rottweiler', 'Dachshund', 'German Shorthaired Pointer', 'Pembroke Welsh Corgi',
+    'Australian Shepherd', 'Yorkshire Terrier', 'Cavalier King Charles Spaniel', 'Boxer',
+    'French Bulldog', 'Siberian Husky', 'Shih Tzu', 'Boston Terrier', 'Pomeranian',
+    'Havanese', 'English Springer Spaniel', 'Cocker Spaniel', 'Miniature Schnauzer',
+    'Border Collie', 'Chihuahua', 'Maltese', 'Great Dane', 'Doberman Pinscher',
+    'Bernese Mountain Dog', 'Saint Bernard', 'Akita', 'Alaskan Malamute', 'Samoyed',
+    'Shiba Inu', 'Bichon Frise', 'Chinese Shar-Pei', 'Collie', 'Dalmatian',
+    'Jack Russell Terrier', 'West Highland White Terrier', 'Scottish Terrier',
+    'Greyhound', 'Whippet', 'Basenji', 'Bloodhound', 'Basset Hound',
+    'Chow Chow', 'Lhasa Apso', 'Pekingese', 'Mixed / Campuran', 'Lainnya'
+  ],
+  'Kucing': [
+    'Persian', 'Maine Coon', 'Siamese', 'Ragdoll', 'British Shorthair',
+    'Bengal', 'Abyssinian', 'Scottish Fold', 'Sphynx', 'Russian Blue',
+    'Birman', 'Burmese', 'Oriental Shorthair', 'Somali', 'Tonkinese',
+    'Russian White', 'Exotic Shorthair', 'Himalayan', 'American Shorthair',
+    'Norwegian Forest Cat', 'Turkish Angora', 'Chartreux', 'Japanese Bobtail',
+    'Manx', 'Cornish Rex', 'Devon Rex', 'Selkirk Rex', 'LaPerm',
+    'Singapura', 'Munchkin', 'Bombay', 'Tuxedo', 'Calico',
+    'Tabby', 'Tortoiseshell', 'Mixed / Kampung', 'Lainnya'
+  ],
+  'Kelinci (Rabbit)': [
+    'Holland Lop', 'Netherland Dwarf', 'Mini Rex', 'Lionhead', 'English Angora',
+    'Flemish Giant', 'Dutch', 'Mini Lop', 'American Fuzzy Lop', 'Polish',
+    'Damascus', 'French Lop', 'Hotot', 'Rex', 'Satin', 'Mixed / Campuran', 'Lainnya'
+  ],
+  'Burung (Bird)': [
+    'Lovebird', 'Nuri / Cockatiel', 'Kenari / Canary', 'Murai Batu', 'Kacer',
+    'Cucak Ijo', 'Lovebird Agapornis', 'Burung Kakaktua', 'Nuri Bayan',
+    'Pleci', 'Pleci Dakun', 'Ciblek', 'Perkutut', 'Merpati', 'Mixed / Campuran', 'Lainnya'
+  ],
+  'Other': ['Mixed / Campuran', 'Lainnya']
+};
+
 document.addEventListener('DOMContentLoaded', async () => {
   initSidebarProfile();
   await seedDatabaseIfEmpty();
@@ -10,6 +47,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   const ownerAddressInput = document.getElementById('ownerAddress') as HTMLTextAreaElement | null;
   const existingOwnerSelect = document.getElementById('existingOwnerSelect') as HTMLSelectElement | null;
   const existingOwnerBadge = document.getElementById('existingOwnerBadge');
+  const speciesSelect = document.getElementById('species') as HTMLSelectElement | null;
+  const breedSelect = document.getElementById('breed') as HTMLSelectElement | null;
+
+  // Dynamic breed based on species
+  if (speciesSelect && breedSelect) {
+    speciesSelect.addEventListener('change', () => {
+      const species = speciesSelect.value;
+      const breeds = BREEDS[species] || [];
+      breedSelect.innerHTML = '<option value="">-- Pilih Breed --</option>';
+      breeds.forEach(b => {
+        const opt = document.createElement('option');
+        opt.value = b;
+        opt.textContent = b;
+        breedSelect.appendChild(opt);
+      });
+    });
+  }
 
   // Load unique existing owners for selection
   const uniqueOwners = await getAllUniqueOwners();
@@ -99,10 +153,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       const phone = rawPhone ? `+62 ${rawPhone}` : '-';
       const address = getVal('ownerAddress') || '-';
       const doctor_name = getVal('doctorName') || 'Dr. Sarah Jenkins';
-      const status = getVal('status') || 'Sehat';
+      const status = 'Menunggu Pemeriksaan';
       const weight = getVal('weight') ? `${getVal('weight')} kg` : '3.5 kg';
       const temperature = getVal('temperature') ? `${getVal('temperature')} °C` : '38.5 °C';
       const heart_rate = getVal('heartRate') ? `${getVal('heartRate')} bpm` : '110 bpm';
+      const visit_time = getVal('visitTime') || new Date().toTimeString().slice(0, 5);
       const initialComplaint = getVal('initialComplaint');
 
       if (!name || !species || !owner_name) {
@@ -129,6 +184,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           weight,
           temperature,
           heart_rate,
+          visit_time,
           last_visit: new Date().toISOString().split('T')[0]
         });
 

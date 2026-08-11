@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (quickDoctorBtn) {
     quickDoctorBtn.addEventListener('click', () => {
       setCurrentUser('doctor');
-      window.location.href = 'doctor_dashboard.html';
+      window.location.href = 'index.html';
     });
   }
 
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (email.includes('doctor') || roleSelect?.value === 'doctor') {
         setCurrentUser('doctor');
-        window.location.href = 'doctor_dashboard.html';
+        window.location.href = 'index.html';
       } else {
         setCurrentUser('front_office');
         window.location.href = 'index.html';

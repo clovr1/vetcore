@@ -9,10 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Top Back Link target based on role
     const backBtn = document.getElementById('profileBackBtn') as HTMLAnchorElement | null;
     if (backBtn) {
-      backBtn.href = user.role === 'doctor' ? 'doctor_dashboard.html' : 'index.html';
-      backBtn.innerHTML = user.role === 'doctor' 
-        ? '<i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Portal Dokter'
-        : '<i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Dashboard Utama';
+      backBtn.href = 'index.html';
+      backBtn.innerHTML = '<i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Dashboard';
     }
 
     // Header profile fields

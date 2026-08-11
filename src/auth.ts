@@ -130,7 +130,6 @@ export function renderSidebar(currentPage: string = '') {
   const doctorMenu = `
     <span class="sidebar-section-label">Menu Utama</span>
     ${buildItem({ href: 'index.html', icon: 'layout-grid', label: 'Overview Utama' })}
-    ${buildItem({ href: 'doctor_dashboard.html', icon: 'stethoscope', label: 'Portal Dokter' })}
     ${buildItem({ href: 'patients.html', icon: 'paw-print', label: 'Daftar Pasien' })}
     <span class="sidebar-section-label">Alat Klinis</span>
     ${buildItem({ href: 'prescriptions.html', icon: 'pill', label: 'E-Prescriptions' })}

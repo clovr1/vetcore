@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VetCore Systems - Pet Patient Profile</title>
-    <!-- Google Fonts: Plus Jakarta Sans & Lora -->
+    <title>VetCore Systems - Profil Pasien</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -32,19 +30,12 @@
             }
         }
     </script>
-    <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/src/design-system.css">
     <style>
-        .custom-badge-perawatan {
-            background-color: #EBF3F0;
-            color: #2D5A4D;
-            border: 1px solid #CBDCD5;
-        }
-        .custom-badge-selesai {
-            background-color: #FDF3EB;
-            color: #A05E2B;
-            border: 1px solid #F5E0D0;
+        .complaint-box {
+            background: linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%);
+            border-left: 4px solid #ef4444;
         }
     </style>
 </head>
@@ -52,7 +43,6 @@
 
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
-        <!-- Brand Header -->
         <div class="sidebar-brand">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-slate-900 text-white flex items-center justify-center shadow-xs shrink-0">
@@ -64,23 +54,15 @@
                 </div>
             </div>
         </div>
-
-        <!-- Navigation Menu -->
         <nav id="sidebarNav" class="sidebar-nav"></nav>
-
-        <!-- Bottom User Card -->
         <div class="sidebar-footer">
             <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
                 <a href="profile.html" id="sidebarProfileLink" class="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
-                    <div id="sidebarAvatar" class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                        SR
-                    </div>
+                    <div id="sidebarAvatar" class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">SJ</div>
                     <div class="min-w-0 flex-1">
-                        <p id="sidebarUserName" class="text-xs font-bold text-slate-900 truncate leading-snug">Siti Rahma</p>
+                        <p id="sidebarUserName" class="text-xs font-bold text-slate-900 truncate leading-snug">Dr. Sarah Jenkins</p>
                         <div class="flex items-center gap-1 mt-0.5">
-                            <span id="sidebarRoleBadge" class="inline-flex items-center px-1.5 py-0.5 text-[9px] font-bold rounded-md bg-blue-100 text-blue-800 border border-blue-200 leading-none truncate">
-                                📋 Front Office
-                            </span>
+                            <span id="sidebarRoleBadge" class="inline-flex items-center px-1.5 py-0.5 text-[9px] font-bold rounded-md bg-emerald-100 text-emerald-800 border border-emerald-200 leading-none truncate">Dokter Hewan</span>
                         </div>
                     </div>
                 </a>
@@ -91,580 +73,546 @@
         </div>
     </aside>
 
-    <!-- Main Content Area -->
-    <main class="flex-1 min-w-0 p-8 overflow-y-auto">
-        <div class="max-w-5xl mx-auto space-y-6">
+    <!-- Main Content -->
+    <main class="flex-1 min-w-0 overflow-y-auto">
+        <div class="max-w-[1200px] mx-auto p-6 lg:p-8 space-y-6">
 
-            <!-- Top Header Bar -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <a href="patients.html" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Patient List
-                </a>
-
-                <div class="flex items-center gap-3">
-                    <div class="relative w-64">
-                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" placeholder="Search records..." class="w-full bg-slate-100 border border-slate-200 rounded-full pl-9 pr-4 py-1.5 text-xs text-slate-800 focus:outline-none">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Owner Profile Header -->
-            <div class="card p-5">
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                    <!-- Left: Owner Info -->
+            <!-- ==================== DOCTOR VIEW ==================== -->
+            <div id="doctorView" class="hidden space-y-6">
+                <!-- Top Header Bar -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0">
-                            <i data-lucide="user" class="w-5 h-5 text-emerald-600"></i>
-                        </div>
+                        <a href="patients.html" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition-colors">
+                            <i data-lucide="arrow-left" class="w-5 h-5 text-slate-600"></i>
+                        </a>
                         <div>
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <span id="ownerHeaderName" class="font-bold text-slate-900">-</span>
-                                <span id="ownerPetsCountBadge" class="badge badge-emerald">1 Hewan</span>
-                            </div>
-                            <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500">
-                                <i data-lucide="phone" class="w-3 h-3"></i>
-                                <span id="ownerHeaderPhone" class="font-mono">-</span>
-                            </div>
+                            <h1 class="serif-title font-bold text-xl text-slate-900">Konsultasi Aktif</h1>
+                            <p id="docConsultationSubtitle" class="text-xs text-slate-500 mt-0.5">Memuat data pasien...</p>
                         </div>
                     </div>
-
-                    <!-- Right: Pet Selector + Action -->
-                    <div class="flex items-center gap-3 flex-wrap">
-                        <div id="topOwnerPetsSwitcher" class="flex items-center gap-2 flex-wrap">
-                            <!-- Dynamically populated pet pills -->
-                        </div>
-                        <a id="topAddOtherPetBtn" href="add_patient.html" class="btn btn-primary text-xs">
-                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah Hewan
-                        </a>
+                    <div class="flex items-center gap-3">
+                        <button id="cancelVisitBtn" class="btn btn-secondary text-xs">
+                            <i data-lucide="x-circle" class="w-4 h-4"></i> Batalkan
+                        </button>
+                        <button id="completeVisitBtn" class="btn btn-primary text-xs">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i> Selesaikan
+                        </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Patient Profile Banner (Matching Screen 4) -->
-            <div class="card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                <div class="flex items-center gap-5">
-                    <!-- Photo Avatar Badge -->
-                    <div id="patientAvatar" class="w-20 h-20 rounded-2xl bg-vetgreen-800 text-white font-bold text-2xl flex items-center justify-center shadow-md shrink-0">
-                        LN
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-3">
-                            <h1 id="patientName" class="serif-title text-2xl font-bold text-slate-900">Luna</h1>
-                            <div class="relative inline-block">
-                                <select id="patientStatusSelect" title="Ubah Status Pasien" class="appearance-none cursor-pointer pl-3 pr-7 py-1 rounded-full text-xs font-semibold focus:outline-none transition-all shadow-xs border bg-emerald-100 text-emerald-800 border-emerald-200">
-                                    <option value="Sehat">Sehat</option>
-                                    <option value="Perawatan">Perawatan</option>
-                                    <option value="Rawat Inap">Rawat Inap</option>
-                                    <option value="Pemulihan">Pemulihan</option>
-                                    <option value="Perlu Perhatian">Perlu Perhatian</option>
-                                    <option value="Kritis">Kritis</option>
-                                    <option value="Sembuh">Sembuh</option>
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-600">
-                                    <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Left Column -->
+                    <div class="lg:col-span-4 space-y-6">
+                        <!-- Patient Info Card -->
+                        <div class="card p-5">
+                            <div class="flex items-start gap-4">
+                                <div id="docPatientAvatar" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 text-white font-bold text-xl flex items-center justify-center shadow-lg shrink-0">LN</div>
+                                <div class="flex-1 min-w-0">
+                                    <h2 id="docPatientName" class="font-bold text-lg text-slate-900">Luna</h2>
+                                    <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+                                        <span id="docSpeciesBadge" class="badge badge-emerald text-[10px]">Feline</span>
+                                        <span id="docBreedBadge" class="badge badge-slate text-[10px]">Persian</span>
+                                        <span id="docAgeBadge" class="badge badge-slate text-[10px]">4 yrs</span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <select id="docPatientStatusSelect" class="appearance-none cursor-pointer pl-3 pr-7 py-1 rounded-full text-xs font-semibold focus:outline-none transition-all shadow-xs border bg-emerald-100 text-emerald-800 border-emerald-200">
+                                            <option value="Menunggu Pemeriksaan">Menunggu Pemeriksaan</option>
+                                            <option value="Sedang Ditangani">Sedang Ditangani</option>
+                                            <option value="Perawatan">Perawatan</option>
+                                            <option value="Rawat Inap">Rawat Inap</option>
+                                            <option value="Sehat">Sehat</option>
+                                            <option value="Selesai">Selesai</option>
+                                            <option value="Pemulihan">Pemulihan</option>
+                                            <option value="Perlu Perhatian">Perlu Perhatian</option>
+                                            <option value="Kritis">Kritis</option>
+                                        </select>
+                                    </div>
+                                    <div class="mt-3 space-y-1.5 text-xs">
+                                        <div class="flex items-center gap-2 text-slate-600">
+                                            <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
+                                            <span>Owner: <span id="docOwnerName" class="font-semibold text-slate-800">-</span></span>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-slate-600">
+                                            <i data-lucide="hash" class="w-3.5 h-3.5 text-slate-400"></i>
+                                            <span>ID: <span id="docMicrochip" class="font-mono text-slate-700">-</span></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <p id="patientMeta" class="text-xs text-slate-500 mt-1">
-                            Cat / Persian &middot; 2 Years &middot; Female &middot; <span class="font-mono text-slate-700">#VET-2023-042</span>
-                        </p>
-                        <div class="flex items-center gap-2 mt-2">
-                            <div class="w-5 h-5 rounded-full bg-vetgreen-50 text-vetgreen-800 flex items-center justify-center text-[9px] font-bold shrink-0">SJ</div>
-                            <span class="text-xs text-slate-600">Attending Doctor: <span id="attendingDoctorName" class="font-semibold text-slate-900">Dr. Sarah Jenkins</span></span>
+
+                        <!-- Complaint -->
+                        <div id="docComplaintSection" class="hidden card p-5 complaint-box">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="w-6 h-6 rounded-lg bg-red-100 flex items-center justify-center">
+                                    <i data-lucide="alert-circle" class="w-4 h-4 text-red-600"></i>
+                                </div>
+                                <h3 class="text-sm font-bold text-slate-900">Keluhan Utama</h3>
+                            </div>
+                            <blockquote id="docComplaintText" class="text-sm text-slate-700 italic leading-relaxed">"..."</blockquote>
+                            <p id="docComplaintMeta" class="text-[11px] text-slate-400 mt-3">-</p>
+                        </div>
+
+                        <!-- Vitals -->
+                        <div class="card p-5">
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-6 h-6 rounded-lg bg-emerald-100 flex items-center justify-center">
+                                    <i data-lucide="activity" class="w-4 h-4 text-emerald-600"></i>
+                                </div>
+                                <h3 class="text-sm font-bold text-slate-900">Tanda Vital</h3>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="form-field">
+                                    <label class="form-label text-[11px]">Berat (kg)</label>
+                                    <div class="relative">
+                                        <input type="text" id="docVitalWeight" placeholder="mis: 4.2" class="input-field pr-10">
+                                        <i data-lucide="scale" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2"></i>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label class="form-label text-[11px]">Suhu (&deg;F)</label>
+                                    <div class="relative">
+                                        <input type="text" id="docVitalTemp" placeholder="mis: 101.5" class="input-field pr-10">
+                                        <i data-lucide="thermometer" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2"></i>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <label class="form-label text-[11px]">Detak Jantung (bpm)</label>
+                                    <div class="relative">
+                                        <input type="text" id="docVitalHeart" placeholder="mis: 140" class="input-field pr-10">
+                                        <i data-lucide="heart-pulse" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="saveVitalsBtn" class="btn btn-secondary w-full mt-4 text-xs">
+                                <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan Tanda Vital
+                            </button>
+                        </div>
+
+                        <!-- Owner Info -->
+                        <div class="card p-5">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="w-6 h-6 rounded-lg bg-blue-100 flex items-center justify-center">
+                                    <i data-lucide="user-check" class="w-4 h-4 text-blue-600"></i>
+                                </div>
+                                <h3 class="text-sm font-bold text-slate-900">Pemilik</h3>
+                            </div>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg">
+                                    <span class="text-slate-500">Nama</span>
+                                    <span id="docOwnerNameFull" class="font-semibold text-slate-800">-</span>
+                                </div>
+                                <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg">
+                                    <span class="text-slate-500">Telepon</span>
+                                    <span id="docOwnerPhone" class="font-mono text-slate-700">-</span>
+                                </div>
+                                <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg">
+                                    <span class="text-slate-500">Alamat</span>
+                                    <span id="docOwnerAddress" class="font-medium text-slate-700 text-right truncate max-w-[180px]">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="lg:col-span-8 space-y-6">
+                        <!-- Assessment -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-vetgreen-50 border border-vetgreen-200 flex items-center justify-center">
+                                        <i data-lucide="clipboard-list" class="w-4 h-4 text-vetgreen-700"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="card-title text-sm">Penilaian Dokter</h3>
+                                        <p class="text-[11px] text-slate-500">Catatan klinis & diagnosa</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <textarea id="doctorAssessment" rows="8" placeholder="Tuliskan catatan klinis, observasi, diagnosa, dan rencana penanganan..." class="input-field resize-none text-sm leading-relaxed"></textarea>
+                                <div class="flex items-center justify-between mt-3">
+                                    <span class="text-[11px] text-slate-400">Terakhir: <span id="assessmentLastUpdate">-</span></span>
+                                    <button id="saveAssessmentBtn" class="btn btn-primary text-xs">
+                                        <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="card p-5">
+                            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Aksi Cepat</h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="openPatientRxModal()" class="p-4 rounded-xl border-2 border-dashed border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all text-center group">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-100 group-hover:bg-blue-100 flex items-center justify-center mx-auto mb-2 transition-colors">
+                                        <i data-lucide="pill" class="w-5 h-5 text-slate-500 group-hover:text-blue-600"></i>
+                                    </div>
+                                    <span class="text-xs font-semibold text-slate-700 group-hover:text-blue-700">Buat Resep</span>
+                                </button>
+                                <button id="addVaccineBtn" onclick="openAddVaccineModal()" class="p-4 rounded-xl border-2 border-dashed border-slate-200 hover:border-emerald-300 hover:bg-emerald-50 transition-all text-center group">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-100 group-hover:bg-emerald-100 flex items-center justify-center mx-auto mb-2 transition-colors">
+                                        <i data-lucide="syringe" class="w-5 h-5 text-slate-500 group-hover:text-emerald-600"></i>
+                                    </div>
+                                    <span class="text-xs font-semibold text-slate-700 group-hover:text-emerald-700">Catat Vaksin</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tabs -->
+                        <div class="flex items-center gap-1 border-b border-slate-200 pb-0 text-xs font-semibold overflow-x-auto">
+                            <button id="tabBtnMedicalHistory" onclick="switchPatientTab('medical')" class="px-4 py-2.5 text-vetgreen-800 border-b-2 border-vetgreen-800 font-bold transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Riwayat Medis
+                            </button>
+                            <button id="tabBtnPrescriptions" onclick="switchPatientTab('prescriptions')" class="px-4 py-2.5 text-slate-500 hover:text-slate-800 border-b-2 border-transparent font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                <i data-lucide="pill" class="w-3.5 h-3.5"></i> Resep Obat
+                            </button>
+                            <button id="tabBtnVaccinations" onclick="switchPatientTab('vaccinations')" class="px-4 py-2.5 text-slate-500 hover:text-slate-800 border-b-2 border-transparent font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                <i data-lucide="syringe" class="w-3.5 h-3.5"></i> Vaksinasi
+                            </button>
+                        </div>
+
+                        <!-- Tab: Medical History -->
+                        <div id="tabContentMedicalHistory" class="space-y-4">
+                            <div class="card p-5">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-sm font-bold text-slate-900">Riwayat Klinis</h3>
+                                    <span class="text-[11px] text-slate-400">Kronologis</span>
+                                </div>
+                                    <div id="notesContainer" class="space-y-3">
+                                        <div class="p-4 text-xs text-slate-400 bg-slate-50 rounded-xl border border-slate-100 text-center">Belum ada rekam medis.</div>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab: Prescriptions -->
+                        <div id="tabContentPrescriptions" class="space-y-4 hidden">
+                            <div class="card p-5">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-sm font-bold text-slate-900">Resep Obat</h3>
+                                </div>
+                                <div id="patientPrescriptionsList" class="space-y-3">
+                                    <div class="p-4 text-xs text-slate-400 bg-slate-50 rounded-xl border border-slate-100 text-center">Memuat resep...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab: Vaccinations -->
+                        <div id="tabContentVaccinations" class="space-y-4 hidden">
+                            <div class="card p-5">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-sm font-bold text-slate-900">Vaksinasi & Deworming</h3>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="table text-xs">
+                                        <thead><tr><th>Nama Vaksin</th><th>Tanggal</th><th>Jadwal Ulang</th><th>Status</th><th class="text-right">Aksi</th></tr></thead>
+                                        <tbody id="vaccinationsTableBody" class="divide-y divide-slate-100">
+                                            <tr><td colspan="5" class="text-center py-6 text-slate-400">Memuat...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Medications -->
+                        <div class="card p-5">
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-6 h-6 rounded-lg bg-purple-100 flex items-center justify-center">
+                                    <i data-lucide="pill" class="w-4 h-4 text-purple-600"></i>
+                                </div>
+                                <h3 class="text-sm font-bold text-slate-900">Obat Aktif</h3>
+                            </div>
+                            <div id="medsContainer" class="space-y-2">
+                                <div class="text-xs text-slate-400 p-3">Tidak ada obat aktif.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== FRONT OFFICE VIEW ==================== -->
+            <div id="foView" class="hidden space-y-6">
+                <!-- Top Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <a href="patients.html" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Daftar Pasien
+                    </a>
+                </div>
+
+                <!-- Owner Profile Header -->
+                <div class="card p-5">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0">
+                                <i data-lucide="user" class="w-5 h-5 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span id="foOwnerHeaderName" class="font-bold text-slate-900">-</span>
+                                    <span id="foPetsCountBadge" class="badge badge-emerald">1 Hewan</span>
+                                </div>
+                                <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500">
+                                    <i data-lucide="phone" class="w-3 h-3"></i>
+                                    <span id="foOwnerHeaderPhone" class="font-mono">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <div id="foTopOwnerPetsSwitcher" class="flex items-center gap-2 flex-wrap"></div>
+                            <a id="foTopAddOtherPetBtn" href="add_patient.html" class="btn btn-primary text-xs">
+                                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah Hewan
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2">
+                <!-- Patient Profile Banner -->
+                <div class="card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="flex items-center gap-5">
+                        <div id="foPatientAvatar" class="w-20 h-20 rounded-2xl bg-vetgreen-800 text-white font-bold text-2xl flex items-center justify-center shadow-md shrink-0">LN</div>
+                        <div>
+                            <div class="flex items-center gap-3">
+                                <h1 id="foPatientName" class="serif-title text-2xl font-bold text-slate-900">Luna</h1>
+                                <span id="foPatientStatusBadge" class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">Sehat</span>
+                            </div>
+                            <p id="foPatientMeta" class="text-xs text-slate-500 mt-1">Cat / Persian &middot; 2 Years &middot; Female</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <div class="w-5 h-5 rounded-full bg-vetgreen-50 text-vetgreen-800 flex items-center justify-center text-[9px] font-bold shrink-0">SJ</div>
+                                <span class="text-xs text-slate-600">Dokter: <span id="foAttendingDoctor" class="font-semibold text-slate-900">Dr. Sarah Jenkins</span></span>
+                            </div>
+                            <div id="foVisitTimeRow" class="hidden flex items-center gap-2 mt-1.5">
+                                <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span class="text-xs text-slate-600">Jam Kunjungan: <span id="foVisitTime" class="font-semibold text-slate-900">--:--</span></span>
+                            </div>
+                        </div>
+                    </div>
                     <button onclick="openRevisitModal()" class="btn btn-primary flex items-center gap-1.5 whitespace-nowrap">
                         <i data-lucide="calendar-plus" class="w-4 h-4"></i> + Catat Kunjungan Ulang
                     </button>
                 </div>
-            </div>
 
-            <!-- Profile Content Grid (Left Profile Tabs & History + Right Vitals) -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Tabs + Content -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Sub Nav Tabs -->
+                        <div class="flex items-center gap-2 border-b border-slate-200 pb-2 text-xs font-semibold overflow-x-auto">
+                            <button id="foTabBtnMedicalHistory" onclick="switchPatientTab('medical')" class="px-4 py-2 text-vetgreen-800 border-b-2 border-vetgreen-800 font-bold transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Medical History
+                            </button>
+                            <button id="foTabBtnPrescriptions" onclick="switchPatientTab('prescriptions')" class="px-4 py-2 text-slate-500 hover:text-slate-800 border-b-2 border-transparent font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                <i data-lucide="pill" class="w-3.5 h-3.5"></i> Prescriptions
+                            </button>
+                            <button id="foTabBtnVaccinations" onclick="switchPatientTab('vaccinations')" class="px-4 py-2 text-slate-500 hover:text-slate-800 border-b-2 border-transparent font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                <i data-lucide="syringe" class="w-3.5 h-3.5"></i> Vaccinations
+                            </button>
+                        </div>
 
-                <!-- Left Column (Sub-tabs & Clinical Timeline) -->
-                <div class="lg:col-span-2 space-y-6">
-
-                    <!-- Sub Nav Tabs (Medical History, Prescriptions, Vaccinations) -->
-                    <div class="flex items-center gap-2 border-b border-slate-200 pb-2 text-xs font-semibold overflow-x-auto">
-                        <button id="tabBtnMedicalHistory" onclick="switchPatientTab('medical')" class="px-4 py-2 text-vetgreen-800 border-b-2 border-vetgreen-800 font-bold transition-all flex items-center gap-1.5 whitespace-nowrap">
-                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Medical History
-                        </button>
-                        <button id="tabBtnPrescriptions" onclick="switchPatientTab('prescriptions')" class="px-4 py-2 text-slate-500 hover:text-slate-800 border-b-2 border-transparent font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap">
-                            <i data-lucide="pill" class="w-3.5 h-3.5"></i> Prescriptions
-                        </button>
-                        <button id="tabBtnVaccinations" onclick="switchPatientTab('vaccinations')" class="px-4 py-2 text-slate-500 hover:text-slate-800 border-b-2 border-transparent font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap">
-                            <i data-lucide="syringe" class="w-3.5 h-3.5"></i> Vaccinations
-                        </button>
-                    </div>
-
-                    <!-- TAB 1: Medical History Pane -->
-                    <div id="tabContentMedicalHistory" class="space-y-6">
-                        <!-- Clinical Timeline Card -->
-                        <div class="card p-6 space-y-4">
-                            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                                <h2 class="serif-title font-bold text-base text-slate-900">Clinical Timeline</h2>
-                                <span class="text-xs text-slate-400">Chronological</span>
+                        <!-- Tab: Medical History -->
+                        <div id="foTabContentMedicalHistory" class="space-y-6">
+                            <div class="card p-6 space-y-4">
+                                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                                    <h2 class="serif-title font-bold text-base text-slate-900">Clinical Timeline</h2>
+                                    <span class="text-xs text-slate-400">Chronological</span>
+                                </div>
+                                <div id="foNotesContainer" class="space-y-4">
+                                    <div class="p-4 text-xs text-slate-400 bg-slate-50 rounded-xl border border-slate-100 text-center">Belum ada rekam medis.</div>
+                                </div>
                             </div>
 
-                            <div id="notesContainer" class="space-y-4">
-                                <div class="p-4 text-xs text-slate-400 bg-slate-50 rounded-xl border border-slate-100 text-center">Memuat rekam medis dari database...</div>
+                            <!-- Owner Details -->
+                            <div class="card p-6 space-y-4">
+                                <div class="border-b border-slate-100 pb-2">
+                                    <h2 class="serif-title font-bold text-sm text-slate-900">Owner Information</h2>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                                        <span class="text-slate-400 block text-[11px]">Owner Name</span>
+                                        <span id="foOwnerName" class="font-bold text-slate-800 mt-0.5 block">-</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                                        <span class="text-slate-400 block text-[11px]">Phone</span>
+                                        <span id="foOwnerPhone" class="font-bold text-slate-800 mt-0.5 block">-</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                                        <span class="text-slate-400 block text-[11px]">Address</span>
+                                        <span id="foOwnerAddress" class="font-bold text-slate-800 mt-0.5 block truncate">-</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Owner Details Card -->
-                        <div class="card p-6 space-y-4">
-                            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                                <div>
-                                    <h2 class="serif-title font-bold text-sm text-slate-900">Owner Information & Contact</h2>
-                                    <p class="text-[11px] text-slate-500">Data pemilik terdaftar di klinik.</p>
+                        <!-- Tab: Prescriptions -->
+                        <div id="foTabContentPrescriptions" class="space-y-4 hidden">
+                            <div class="card p-6 space-y-4">
+                                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                                    <h2 class="serif-title font-bold text-base text-slate-900">E-Prescriptions</h2>
                                 </div>
-                                <a id="addOtherPetLink" href="add_patient.html" class="btn btn-secondary flex items-center gap-1">
-                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> + Hewan Baru Pemilik Ini
-                                </a>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                                <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                                    <span class="text-slate-400 block text-[11px]">Owner Name</span>
-                                    <span id="ownerName" class="font-bold text-slate-800 mt-0.5 block">-</span>
-                                </div>
-                                <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                                    <span class="text-slate-400 block text-[11px]">Phone Number</span>
-                                    <span id="ownerPhone" class="font-bold text-slate-800 mt-0.5 block">-</span>
-                                </div>
-                                <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                                    <span class="text-slate-400 block text-[11px]">Address</span>
-                                    <span id="ownerAddress" class="font-bold text-slate-800 mt-0.5 block truncate">-</span>
-                                </div>
-                            </div>
-
-                            <!-- Other Pets Owned by this Owner -->
-                            <div class="pt-2 border-t border-slate-100">
-                                <span class="text-xs font-bold text-slate-700 block mb-2">Hewan Lain Milik Pemilik Ini:</span>
-                                <div id="ownerOtherPetsList" class="flex flex-wrap gap-2 text-xs">
-                                    <span class="text-slate-400 text-xs italic">Memuat daftar hewan lain...</span>
+                                <div id="foPatientPrescriptionsList" class="space-y-3">
+                                    <div class="p-4 text-xs text-slate-400 bg-slate-50 rounded-xl border border-slate-100 text-center">Memuat resep...</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- TAB 2: Prescriptions Pane -->
-                    <div id="tabContentPrescriptions" class="space-y-4 hidden">
-                        <div class="card p-6 space-y-4">
-                            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                                <div>
-                                    <h2 class="serif-title font-bold text-base text-slate-900">E-Prescriptions & Racikan Obat</h2>
-                                    <p class="text-xs text-slate-500">Daftar resep obat digital yang diterbitkan untuk pasien ini.</p>
+                        <!-- Tab: Vaccinations -->
+                        <div id="foTabContentVaccinations" class="space-y-4 hidden">
+                            <div class="card p-6 space-y-4">
+                                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                                    <h2 class="serif-title font-bold text-base text-slate-900">Vaccination Record</h2>
                                 </div>
-                                <button onclick="openPatientRxModal()" class="btn btn-primary flex items-center gap-1.5">
-                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Buat Resep Obat
-                                </button>
-                            </div>
-
-                            <div id="patientPrescriptionsList" class="space-y-3">
-                                <div class="p-4 text-xs text-slate-400 bg-slate-50 rounded-xl border border-slate-100 text-center">Memuat resep obat pasien...</div>
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden text-xs">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700">
+                                                <th class="p-3">Nama Vaksin</th>
+                                                <th class="p-3">Tanggal</th>
+                                                <th class="p-3">Jadwal Ulang</th>
+                                                <th class="p-3">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="foVaccinationsTableBody" class="divide-y divide-slate-200 text-slate-800">
+                                            <tr><td colspan="4" class="p-4 text-center text-slate-400">Memuat data vaksinasi...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- TAB 3: Vaccinations Pane -->
-                    <div id="tabContentVaccinations" class="space-y-4 hidden">
-                        <div class="card p-6 space-y-4">
-                            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                                <div>
-                                    <h2 class="serif-title font-bold text-base text-slate-900">Vaccination & Deworming Record</h2>
-                                    <p class="text-xs text-slate-500">Riwayat vaksinasi dan pencegahan parasit berkala.</p>
-                                </div>
-                                <button onclick="openAddVaccineModal()" class="btn btn-secondary flex items-center gap-1">
-                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Catat Vaksin
-                                </button>
-                            </div>
-
-                            <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden text-xs">
-                                <table class="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700">
-                                            <th class="p-3">Nama Vaksin / Anti-Parasit</th>
-                                            <th class="p-3 whitespace-nowrap">Tanggal Vaksin</th>
-                                            <th class="p-3 whitespace-nowrap">Jadwal Ulang (Due)</th>
-                                            <th class="p-3 whitespace-nowrap">Status</th>
-                                            <th class="p-3 text-right whitespace-nowrap">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="vaccinationsTableBody" class="divide-y divide-slate-200 text-slate-800">
-                                        <tr>
-                                            <td colspan="5" class="p-4 text-center text-slate-400">Memuat data vaksinasi...</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Column (Vitals & Active Medications) -->
-                <div class="space-y-6">
-
-                    <!-- Latest Vital Signs Card -->
-                    <div class="card p-6 space-y-3">
-                        <div class="flex items-center justify-between">
+                    <!-- Right Column -->
+                    <div class="space-y-6">
+                        <!-- Latest Vitals -->
+                        <div class="card p-6 space-y-3">
                             <h2 class="serif-title font-bold text-sm text-slate-900">Latest Vital Signs</h2>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+                                    <span class="flex items-center gap-2 text-slate-600"><i data-lucide="scale" class="w-3.5 h-3.5 text-slate-400"></i> Weight</span>
+                                    <span id="foVitalWeight" class="font-bold text-slate-800">-</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+                                    <span class="flex items-center gap-2 text-slate-600"><i data-lucide="thermometer" class="w-3.5 h-3.5 text-slate-400"></i> Temperature</span>
+                                    <span id="foVitalTemp" class="font-bold text-slate-800">-</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+                                    <span class="flex items-center gap-2 text-slate-600"><i data-lucide="heart-pulse" class="w-3.5 h-3.5 text-slate-400"></i> Heart Rate</span>
+                                    <span id="foVitalHeart" class="font-bold text-slate-800">-</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="space-y-2 text-xs">
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
-                                <span class="flex items-center gap-2 text-slate-600"><i data-lucide="scale" class="w-3.5 h-3.5 text-slate-400"></i> Weight</span>
-                                <span id="vitalWeight" class="font-bold text-slate-800">-</span>
-                            </div>
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
-                                <span class="flex items-center gap-2 text-slate-600"><i data-lucide="thermometer" class="w-3.5 h-3.5 text-slate-400"></i> Temperature</span>
-                                <span id="vitalTemp" class="font-bold text-slate-800">-</span>
-                            </div>
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
-                                <span class="flex items-center gap-2 text-slate-600"><i data-lucide="heart-pulse" class="w-3.5 h-3.5 text-slate-400"></i> Heart Rate</span>
-                                <span id="vitalHeart" class="font-bold text-slate-800">-</span>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Active Medications Card -->
-                    <div class="card p-6 space-y-3">
-                        <div class="flex items-center justify-between">
+                        <!-- Active Medications -->
+                        <div class="card p-6 space-y-3">
                             <h2 class="serif-title font-bold text-sm text-slate-900">Active Medications</h2>
-                        </div>
-
-                        <div id="medsContainer" class="space-y-2">
-                            <div class="text-xs text-slate-400 p-2">Memuat daftar obat...</div>
+                            <div id="foMedsContainer" class="space-y-2">
+                                <div class="text-xs text-slate-400 p-2">Tidak ada obat aktif.</div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
 
         </div>
     </main>
 
-    <!-- Modal Buat Resep Baru (In-Patient Detail Page) -->
+    <!-- Modals (shared) -->
     <div id="newPatientRxModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
         <div class="card max-w-xl w-full p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div>
-                    <h3 class="serif-title font-bold text-slate-900 text-base">Buat E-Resep Obat Pasien</h3>
-                    <p class="text-[11px] text-slate-500">Racik resep obat digital untuk pasien <span id="rxModalPatientName" class="font-bold text-slate-800"></span>.</p>
+                    <h3 class="serif-title font-bold text-slate-900 text-base">Buat E-Resep Obat</h3>
+                    <p class="text-[11px] text-slate-500">Resep untuk <span id="rxModalPatientName" class="font-bold text-slate-800"></span></p>
                 </div>
                 <button onclick="closePatientRxModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-
             <form id="createPatientRxForm" class="space-y-4 text-xs">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="font-semibold text-slate-700 block mb-1">Dokter Pemeriksa *</label>
-                        <select id="patientRxDoctorSelect" required class="input-field">
-                            <option value="" disabled selected>-- Pilih Dokter --</option>
-                            <option value="Dr. Sarah Jenkins">Dr. Sarah Jenkins (Lead Vet)</option>
-                            <option value="Dr. Michael Lee">Dr. Michael Lee (Vet Surgeon)</option>
-                            <option value="Dr. Amanda">Dr. Amanda (Veterinary Dermatologist)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="font-semibold text-slate-700 block mb-1">Nomor Resep (Rx Number)</label>
-                        <input type="text" id="patientRxNumberInput" placeholder="e.g. RX-2025-001" class="input-field">
-                    </div>
-
-                    <div class="sm:col-span-2">
-                        <label class="font-semibold text-slate-700 block mb-1">Durasi Pengobatan *</label>
-                        <select id="patientRxDurationSelect" required class="input-field">
-                            <option value="" disabled selected>-- Pilih Durasi Pengobatan --</option>
-                            <option value="3 Hari">3 Hari</option>
-                            <option value="5 Hari">5 Hari</option>
-                            <option value="7 Hari">7 Hari</option>
-                            <option value="10 Hari">10 Hari</option>
-                            <option value="14 Hari">14 Hari</option>
-                            <option value="30 Hari">30 Hari / Routine</option>
-                        </select>
-                    </div>
+                    <div><label class="form-label">Dokter *</label><select id="patientRxDoctorSelect" required class="input-field"><option value="" disabled selected>-- Pilih Dokter --</option><option value="Dr. Sarah Jenkins">Dr. Sarah Jenkins</option><option value="Dr. Michael Lee">Dr. Michael Lee</option><option value="Dr. Amanda">Dr. Amanda</option></select></div>
+                    <div><label class="form-label">Nomor Resep</label><input type="text" id="patientRxNumberInput" placeholder="RX-2025-001" class="input-field"></div>
+                    <div class="sm:col-span-2"><label class="form-label">Durasi *</label><select id="patientRxDurationSelect" required class="input-field"><option value="" disabled selected>-- Pilih Durasi --</option><option value="3 Hari">3 Hari</option><option value="5 Hari">5 Hari</option><option value="7 Hari">7 Hari</option><option value="14 Hari">14 Hari</option></select></div>
                 </div>
-
-                <!-- Dynamic Medication Items List -->
                 <div class="border-t border-slate-100 pt-3 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <label class="font-bold text-slate-900 block text-xs">Rincian Obat & Dosis (Rx Items) *</label>
-                        <button type="button" onclick="addPatientRxItemRow()" class="text-vetgreen-800 font-bold hover:underline flex items-center gap-1">
-                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah Obat
-                        </button>
-                    </div>
-
-                    <div id="patientRxItemsContainer" class="space-y-2">
-                        <!-- Dynamic Item Rows -->
-                    </div>
+                    <div class="flex items-center justify-between"><label class="font-bold text-slate-900 text-xs">Rincian Obat *</label><button type="button" onclick="addPatientRxItemRow()" class="text-vetgreen-800 font-bold hover:underline flex items-center gap-1 text-[11px]"><i data-lucide="plus" class="w-3 h-3"></i> Tambah</button></div>
+                    <div id="patientRxItemsContainer" class="space-y-2"></div>
                 </div>
-
-                <div>
-                    <label class="font-semibold text-slate-700 block mb-1">Catatan Tambahan (Optional)</label>
-                    <textarea id="patientRxNotesInput" rows="2" placeholder="Catatan aturan minum obat..." 
-                              class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:border-vetgreen-800 focus:bg-white resize-none"></textarea>
-                </div>
-
+                <div><label class="form-label">Catatan</label><textarea id="patientRxNotesInput" rows="2" placeholder="Aturan minum..." class="input-field resize-none"></textarea></div>
                 <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
                     <button type="button" onclick="closePatientRxModal()" class="btn btn-secondary">Batal</button>
-                    <button type="submit" id="savePatientRxBtn" class="btn btn-primary flex items-center gap-1.5">
-                        <i data-lucide="check" class="w-4 h-4"></i> Simpan & Terbitkan Resep
-                    </button>
+                    <button type="submit" class="btn btn-primary"><i data-lucide="check" class="w-4 h-4"></i> Simpan Resep</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal View / Print Printable E-Prescription -->
     <div id="viewRxModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
         <div class="card max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3 no-print">
-                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Preview Resep Digital</span>
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Preview Resep</span>
                 <div class="flex items-center gap-2">
-                    <button onclick="window.print()" class="btn btn-primary flex items-center gap-1.5">
-                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak Resep
-                    </button>
+                    <button onclick="window.print()" class="btn btn-primary text-xs"><i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak</button>
                     <button onclick="document.getElementById('viewRxModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
             </div>
-
-            <!-- Printable Rx Area -->
             <div id="printablePrescriptionArea" class="card p-6 space-y-4 text-xs text-slate-800">
-                <!-- Clinic Header -->
                 <div class="flex items-start justify-between border-b-2 border-slate-800 pb-4">
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="paw-print" class="w-5 h-5 text-vetgreen-800"></i>
-                            <h2 class="serif-title font-bold text-lg text-slate-900">VETCORE VETERINARY CLINIC</h2>
-                        </div>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Jl. Kesehatan Hewan No. 88, Bandung &middot; Telp: (022) 7654-321</p>
-                    </div>
-                    <div class="text-right">
-                        <span id="previewRxNumber" class="font-mono font-bold text-sm text-slate-900 block">RX-2025-001</span>
-                        <span id="previewRxDate" class="text-[11px] text-slate-500 block">13 Jul 2025</span>
-                    </div>
+                    <div><div class="flex items-center gap-2"><i data-lucide="paw-print" class="w-5 h-5 text-vetgreen-800"></i><h2 class="serif-title font-bold text-lg text-slate-900">VETCORE VETERINARY CLINIC</h2></div><p class="text-[11px] text-slate-500 mt-0.5">Jl. Kesehatan Hewan No. 88, Bandung</p></div>
+                    <div class="text-right"><span id="previewRxNumber" class="font-mono font-bold text-sm text-slate-900 block">RX-0000</span><span id="previewRxDate" class="text-[11px] text-slate-500 block">-</span></div>
                 </div>
-
-                <!-- Patient & Owner Details Bar -->
                 <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
-                    <div>
-                        <span class="text-[10px] text-slate-400 font-bold uppercase block">Pasien (Hewan)</span>
-                        <span id="previewPatientName" class="font-bold text-slate-900 block">Buddy</span>
-                        <span id="previewPatientCode" class="text-[11px] text-slate-500">ID: #VET-001</span>
-                    </div>
-                    <div>
-                        <span class="text-[10px] text-slate-400 font-bold uppercase block">Pemilik / Dokter</span>
-                        <span id="previewOwnerName" class="font-semibold text-slate-800 block">Ahmad Fauzi</span>
-                        <span id="previewDoctorName" class="text-[11px] text-slate-500">Dokter: Dr. Sarah Jenkins</span>
-                    </div>
+                    <div><span class="text-[10px] text-slate-400 font-bold uppercase block">Pasien</span><span id="previewPatientName" class="font-bold text-slate-900 block">-</span><span id="previewPatientCode" class="text-[11px] text-slate-500">-</span></div>
+                    <div><span class="text-[10px] text-slate-400 font-bold uppercase block">Pemilik / Dokter</span><span id="previewOwnerName" class="font-semibold text-slate-800 block">-</span><span id="previewDoctorName" class="text-[11px] text-slate-500">-</span></div>
                 </div>
-
-                <!-- Rx Symbol & Table -->
                 <div class="space-y-2 pt-2">
-                    <div class="flex items-center gap-2">
-                        <span class="serif-title text-2xl font-bold text-vetgreen-800">Rx</span>
-                        <span class="text-xs text-slate-400 italic">(Resep Obat Veterinary)</span>
-                    </div>
-
-                    <table class="w-full border-collapse text-xs">
-                        <thead>
-                            <tr class="bg-slate-100 border-y border-slate-200 text-slate-700 text-left font-bold">
-                                <th class="p-2">No</th>
-                                <th class="p-2">Nama Obat / Vitamin</th>
-                                <th class="p-2">Dosis & Aturan Pakai</th>
-                                <th class="p-2">Instruksi Khusus</th>
-                            </tr>
-                        </thead>
-                        <tbody id="previewRxItemsBody" class="divide-y divide-slate-100">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
+                    <span class="serif-title text-2xl font-bold text-vetgreen-800">Rx</span>
+                    <table class="w-full border-collapse text-xs"><thead><tr class="bg-slate-100 border-y border-slate-200 text-slate-700 text-left font-bold"><th class="p-2">No</th><th class="p-2">Obat</th><th class="p-2">Dosis</th><th class="p-2">Instruksi</th></tr></thead><tbody id="previewRxItemsBody" class="divide-y divide-slate-100"></tbody></table>
                 </div>
-
-                <!-- Notes & Duration -->
-                <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-3 text-xs space-y-1">
-                    <span class="font-bold text-amber-900 block">Catatan Pengobatan & Durasi:</span>
-                    <p id="previewRxNotes" class="text-amber-800 text-[11px]">Durasi: 7 Hari. Simpan di tempat sejuk.</p>
-                </div>
-
-                <!-- Signature Footer -->
-                <div class="flex items-end justify-between pt-6">
-                    <div class="text-[10px] text-slate-400">
-                        * e-Resep sah diterbitkan oleh sistem resmi VetCore Clinical Portal.
-                    </div>
-                    <div class="text-center">
-                        <p class="text-[11px] text-slate-500 mb-8">Dokter Hewan Penanggung Jawab,</p>
-                        <p id="previewDoctorSign" class="font-bold text-slate-900 underline text-xs">Dr. Sarah Jenkins</p>
-                        <p class="text-[10px] text-slate-400">SIP. 440/VET-BDG/2024</p>
-                    </div>
-                </div>
+                <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-3 text-xs"><span class="font-bold text-amber-900 block mb-1">Catatan:</span><p id="previewRxNotes" class="text-amber-800 text-[11px]">-</p></div>
+                <div class="flex items-end justify-between pt-6"><div class="text-[10px] text-slate-400">* e-Resep sah dari VetCore.</div><div class="text-center"><p class="text-[11px] text-slate-500 mb-8">Dokter Hewan,</p><p id="previewDoctorSign" class="font-bold text-slate-900 underline text-xs">-</p></div></div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Add Vaccine Record -->
     <div id="addVaccineModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
         <div class="card max-w-md w-full p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
-                        <i data-lucide="syringe" class="w-4 h-4"></i>
-                    </div>
-                    <div>
-                        <h3 class="serif-title font-bold text-slate-900 text-sm">Catat Vaksinasi / Anti-Parasit</h3>
-                        <p class="text-[11px] text-slate-500">Pilih jenis vaksin dan tentukan tanggal jadwal ulang.</p>
-                    </div>
-                </div>
+                <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center"><i data-lucide="syringe" class="w-4 h-4"></i></div><div><h3 class="font-bold text-slate-900 text-sm">Catat Vaksinasi</h3><p class="text-[11px] text-slate-500">Pilih vaksin dan jadwal booster.</p></div></div>
                 <button onclick="closeAddVaccineModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-
             <form id="addVaccineForm" class="space-y-3.5 text-xs">
-                <div>
-                    <label class="font-semibold text-slate-700 block mb-1">Pilihan Jenis Vaksin / Obat *</label>
-                    <select id="vacTypeSelect" required class="input-field">
-                        <option value="" disabled selected>-- Pilih Jenis Vaksin / Anti-Parasit --</option>
-                        <option value="Vaksin Core Rabies">Vaksin Core Rabies (Rabies Vaccine)</option>
-                        <option value="Vaksin Tricat Trio (FVRCP)">Vaksin Tricat Trio (FVRCP - Kucing)</option>
-                        <option value="Vaksin Felocell 4">Vaksin Felocell 4 (Kucing Complete)</option>
-                        <option value="Vaksin Nobivac DHPPi + Lepto">Vaksin Nobivac DHPPi + Lepto (Anjing)</option>
-                        <option value="Vaksin Eurican 7">Vaksin Eurican 7 (Anjing Complete)</option>
-                        <option value="Obat Cacing Drontal (Deworming)">Obat Cacing Drontal (Deworming)</option>
-                        <option value="Anti-Kutu Revolution Spot-on">Anti-Kutu & Parasit Revolution Spot-on</option>
-                        <option value="Anti-Tick Simparica Trio">Anti-Tick & Flea Simparica Trio</option>
-                        <option value="Vaksin Bordetella Bronchiseptica">Vaksin Bordetella (Kennel Cough)</option>
-                    </select>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="font-semibold text-slate-700 block mb-1">Tanggal Vaksin *</label>
-                        <input type="date" id="vacGivenDateInput" required class="input-field">
-                    </div>
-
-                    <div>
-                        <label class="font-semibold text-slate-700 block mb-1">Interval Booster *</label>
-                        <select id="vacIntervalSelect" required class="input-field">
-                            <option value="12">1 Tahun (Vaksin Rutin Tahunan)</option>
-                            <option value="3">3 Bulan (Deworming / Obat Cacing)</option>
-                            <option value="1">1 Bulan (Anti-Kutu Bulanan)</option>
-                            <option value="6">6 Bulan</option>
-                            <option value="36">3 Tahun (Booster Rabies)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="font-semibold text-slate-700 block mb-1">Nomor Batch / Catatan (Optional)</label>
-                    <input type="text" id="vacNotesInput" placeholder="Contoh: Batch No. #B-883921 / Kondisi Sehat" class="input-field">
-                </div>
-
-                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
-                    <button type="button" onclick="closeAddVaccineModal()" class="btn btn-secondary">Batal</button>
-                    <button type="submit" id="saveVaccineBtn" class="btn btn-primary flex items-center gap-1.5">
-                        <i data-lucide="check" class="w-4 h-4"></i> Simpan Record Vaksin
-                    </button>
-                </div>
+                <div><label class="form-label">Jenis Vaksin *</label><select id="vacTypeSelect" required class="input-field"><option value="" disabled selected>-- Pilih Vaksin --</option><option value="Vaksin Core Rabies">Rabies</option><option value="Vaksin Tricat Trio (FVRCP)">Tricat Trio (Kucing)</option><option value="Vaksin Nobivac DHPPi + Lepto">Nobivac (Anjing)</option><option value="Obat Cacing Drontal (Deworming)">Drontal (Deworming)</option><option value="Anti-Kutu Revolution Spot-on">Revolution (Anti-Kutu)</option></select></div>
+                <div class="grid grid-cols-2 gap-3"><div><label class="form-label">Tanggal *</label><input type="date" id="vacGivenDateInput" required class="input-field"></div><div><label class="form-label">Booster *</label><select id="vacIntervalSelect" required class="input-field"><option value="12">1 Tahun</option><option value="3">3 Bulan</option><option value="1">1 Bulan</option></select></div></div>
+                <div><label class="form-label">Catatan</label><input type="text" id="vacNotesInput" placeholder="Batch No." class="input-field"></div>
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100"><button type="button" onclick="closeAddVaccineModal()" class="btn btn-secondary">Batal</button><button type="submit" class="btn btn-primary"><i data-lucide="check" class="w-4 h-4"></i> Simpan</button></div>
             </form>
         </div>
     </div>
 
-    <!-- Modal Catat Kunjungan Ulang (Re-visit Check-In) -->
     <div id="revisitModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
         <div class="card max-w-lg w-full p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-vetgreen-50 text-vetgreen-800 flex items-center justify-center">
-                        <i data-lucide="calendar-plus" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="serif-title font-bold text-slate-900 text-sm">Catat Kunjungan Ulang (Re-Visit)</h3>
-                        <p class="text-[11px] text-slate-500">Tambah rekam medis kunjungan baru tanpa membuat profil pasien ganda.</p>
-                    </div>
-                </div>
+                <div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-vetgreen-50 text-vetgreen-800 flex items-center justify-center"><i data-lucide="calendar-plus" class="w-5 h-5"></i></div><div><h3 class="font-bold text-slate-900 text-sm">Catat Kunjungan Ulang</h3><p class="text-[11px] text-slate-500">Tambah rekam medis baru.</p></div></div>
                 <button onclick="closeRevisitModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-
             <form id="revisitForm" class="space-y-3.5 text-xs">
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="font-semibold text-slate-700 block mb-1">Tanggal Kunjungan *</label>
-                        <input type="date" id="revisitDateInput" required class="input-field">
-                    </div>
-                    <div>
-                        <label class="font-semibold text-slate-700 block mb-1">Dokter Pemeriksa (DPJP) *</label>
-                        <select id="revisitDoctorSelect" required class="input-field font-semibold">
-                            <option value="Dr. Sarah Jenkins">Dr. Sarah Jenkins (General Practitioner)</option>
-                            <option value="Dr. Michael Lee">Dr. Michael Lee (Veterinary Surgeon)</option>
-                            <option value="Dr. Amanda">Dr. Amanda (Veterinary Dermatologist)</option>
-                            <option value="Dr. Smith">Dr. Smith (Internal Medicine)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="font-semibold text-slate-700 block mb-1">Judul / Kategori Kunjungan *</label>
-                    <input type="text" id="revisitTitleInput" required placeholder="Contoh: Kunjungan Kontrol Ulang / Checkup Berkala / Keluhan Demam" class="input-field font-medium">
-                </div>
-
-                <div>
-                    <label class="font-semibold text-slate-700 block mb-1">Detail Keluhan & Catatan Pemeriksaan Klinis *</label>
-                    <textarea id="revisitDetailInput" rows="3" required placeholder="Tuliskan keluhan terbaru, hasil anamnesa, atau temuan fisik saat kunjungan ini..." class="input-field resize-none"></textarea>
-                </div>
-
+                <div class="grid grid-cols-2 gap-3"><div><label class="form-label">Tanggal *</label><input type="date" id="revisitDateInput" required class="input-field"></div><div><label class="form-label">Dokter *</label><select id="revisitDoctorSelect" required class="input-field"><option value="Dr. Sarah Jenkins">Dr. Sarah Jenkins</option><option value="Dr. Michael Lee">Dr. Michael Lee</option></select></div></div>
+                <div><label class="form-label">Judul *</label><input type="text" id="revisitTitleInput" required placeholder="Kontrol Ulang" class="input-field"></div>
+                <div><label class="form-label">Detail *</label><textarea id="revisitDetailInput" rows="3" required placeholder="Keluhan terbaru..." class="input-field resize-none"></textarea></div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                    <span class="font-bold text-slate-800 block text-[11px]">Update Kondisi & Vitals (Opsional):</span>
+                    <span class="font-bold text-slate-800 block text-[11px]">Update Vitals:</span>
                     <div class="grid grid-cols-4 gap-2">
-                        <div>
-                            <label class="text-[10px] text-slate-500 block mb-0.5">Status Pasien</label>
-                            <select id="revisitStatusSelect" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11px] font-semibold text-slate-800">
-                                <option value="Sehat">Sehat</option>
-                                <option value="Perawatan">Perawatan</option>
-                                <option value="Pemulihan">Pemulihan</option>
-                                <option value="Perlu Perhatian">Perlu Perhatian</option>
-                                <option value="Kritis">Kritis</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-[10px] text-slate-500 block mb-0.5">Berat (kg)</label>
-                            <input type="text" id="revisitWeightInput" placeholder="3.5" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11px] text-slate-800">
-                        </div>
-                        <div>
-                            <label class="text-[10px] text-slate-500 block mb-0.5">Suhu (°C)</label>
-                            <input type="text" id="revisitTempInput" placeholder="38.5" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11px] text-slate-800">
-                        </div>
-                        <div>
-                            <label class="text-[10px] text-slate-500 block mb-0.5">Detak Jantung</label>
-                            <input type="text" id="revisitHrInput" placeholder="110 bpm" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11px] text-slate-800">
-                        </div>
+                        <div><label class="text-[10px] text-slate-500 block mb-0.5">Status</label><select id="revisitStatusSelect" class="input-field text-[11px] py-1.5"><option value="Sehat">Sehat</option><option value="Perawatan">Perawatan</option></select></div>
+                        <div><label class="text-[10px] text-slate-500 block mb-0.5">Berat</label><input type="text" id="revisitWeightInput" placeholder="kg" class="input-field text-[11px] py-1.5"></div>
+                        <div><label class="text-[10px] text-slate-500 block mb-0.5">Suhu</label><input type="text" id="revisitTempInput" placeholder="°F" class="input-field text-[11px] py-1.5"></div>
+                        <div><label class="text-[10px] text-slate-500 block mb-0.5">Jantung</label><input type="text" id="revisitHrInput" placeholder="bpm" class="input-field text-[11px] py-1.5"></div>
                     </div>
                 </div>
-
-                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
-                    <button type="button" onclick="closeRevisitModal()" class="btn btn-secondary">Batal</button>
-                    <button type="submit" id="saveRevisitBtn" class="btn btn-primary flex items-center gap-1.5">
-                        <i data-lucide="check" class="w-4 h-4"></i> Simpan Kunjungan Ulang
-                    </button>
-                </div>
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100"><button type="button" onclick="closeRevisitModal()" class="btn btn-secondary">Batal</button><button type="submit" class="btn btn-primary"><i data-lucide="check" class="w-4 h-4"></i> Simpan</button></div>
             </form>
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
         <div class="bg-white border border-emerald-300 text-slate-800 p-4 rounded-xl shadow-xl flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                <i data-lucide="check" class="w-4 h-4"></i>
-            </div>
-            <div>
-                <h4 class="text-xs font-bold text-slate-900">Database Updated</h4>
-                <p id="toastText" class="text-[11px] text-slate-500 mt-0.5">Data berhasil disimpan ke Firestore.</p>
-            </div>
+            <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0"><i data-lucide="check" class="w-4 h-4"></i></div>
+            <div><h4 class="text-xs font-bold text-slate-900">Berhasil</h4><p id="toastText" class="text-[11px] text-slate-500 mt-0.5">Data tersimpan.</p></div>
         </div>
     </div>
 

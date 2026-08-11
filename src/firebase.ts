@@ -51,6 +51,8 @@ export interface Patient {
   heart_rate: string;
   doctor_name: string;
   last_visit: string;
+  visit_time?: string;
+  microchip?: string;
   avatar_idx?: number;
   created_at?: any;
 }
@@ -800,6 +802,9 @@ export async function seedMultiPetOwnerIfMissing() {
 
 export async function seedDatabaseIfEmpty() {
   try {
+    const wasCleared = localStorage.getItem('patients_cleared') === 'true';
+    if (wasCleared) return;
+    
     const snap = await getDocs(collection(db, 'patients'));
     if (snap.empty) {
       console.log('Database empty, adding 1 sample patient...');
@@ -812,6 +817,7 @@ export async function seedDatabaseIfEmpty() {
 }
 
 (window as any).clearAllDatabaseData = clearAllDatabaseData;
+(window as any).deleteAllPatients = deleteAllPatients;
 
 // Patient CRUD
 export function subscribePatients(callback: (patients: Patient[]) => void) {
@@ -900,6 +906,32 @@ export function subscribeOwnerPets(ownerName: string, currentPatientId: string, 
   });
 }
 
+export async function deleteAllPatients(): Promise<void> {
+  const patientCols = ['patients', 'clinical_notes', 'medications', 'prescriptions', 'vaccinations'];
+  for (const colName of patientCols) {
+    try {
+      const snap = await getDocs(collection(db, colName));
+      let batch = writeBatch(db);
+      let count = 0;
+      for (const docSnap of snap.docs) {
+        batch.delete(doc(db, colName, docSnap.id));
+        count++;
+        if (count >= 400) {
+          await batch.commit();
+          batch = writeBatch(db);
+          count = 0;
+        }
+      }
+      if (count > 0) {
+        await batch.commit();
+      }
+    } catch (e) {
+      console.error(`Error clearing ${colName}:`, e);
+    }
+  }
+  localStorage.setItem('patients_cleared', 'true');
+}
+
 export async function getAllUniqueOwners(): Promise<{ owner_name: string; phone: string; address: string; pets: string[] }[]> {
   try {
     const snap = await getDocs(collection(db, 'patients'));
@@ -961,13 +993,57 @@ export function subscribeClinicalNotes(patientId: string, callback: (notes: Clin
   });
 }
 
-export async function addClinicalNote(patientId: string, title: string, detail: string, note_date?: string) {
-  const todayStr = note_date || new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+export function subscribeAllClinicalNotes(callback: (notes: ClinicalNote[]) => void) {
+  return onSnapshot(collection(db, 'clinical_notes'), (snapshot) => {
+    const notes: ClinicalNote[] = snapshot.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...docSnap.data() as Omit<ClinicalNote, 'id'>
+    }));
+    notes.sort((a, b) => {
+      const tA = a.created_at?.seconds || 0;
+      const tB = b.created_at?.seconds || 0;
+      return tB - tA;
+    });
+    callback(notes);
+  }, (err) => {
+    console.error('Error subscribing all clinical notes:', err);
+  });
+}
+
+export async function addClinicalNote(
+  patientIdOrObj: string | { patient_id: string; title: string; detail: string; note_date?: string; doctor_name?: string },
+  title?: string,
+  detail?: string,
+  note_date?: string,
+  doctor_name?: string
+) {
+  let patientId: string;
+  let noteTitle: string;
+  let noteDetail: string;
+  let noteDate: string;
+  let noteDoctor: string;
+
+  if (typeof patientIdOrObj === 'object') {
+    patientId = patientIdOrObj.patient_id;
+    noteTitle = patientIdOrObj.title;
+    noteDetail = patientIdOrObj.detail;
+    noteDate = patientIdOrObj.note_date || new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    noteDoctor = patientIdOrObj.doctor_name || '';
+  } else {
+    patientId = patientIdOrObj;
+    noteTitle = title || '';
+    noteDetail = detail || '';
+    noteDate = note_date || new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    noteDoctor = doctor_name || '';
+  }
+
+  const todayStr = noteDate;
   const docRef = await addDoc(collection(db, 'clinical_notes'), {
     patient_id: patientId,
-    title,
-    detail,
+    title: noteTitle,
+    detail: noteDetail,
     note_date: todayStr,
+    doctor_name: noteDoctor,
     created_at: serverTimestamp()
   });
   
@@ -1221,55 +1297,6 @@ export async function autoSeedPatientRecordsIfEmpty(patientId: string, patient: 
         note_date: patient.last_visit || 'Hari ini',
         created_at: serverTimestamp()
       });
-    }
-
-    const rxSnap = await getDocs(query(collection(db, 'prescriptions'), where('patient_id', '==', patientId)));
-    if (rxSnap.empty) {
-      const idx = Math.abs(patientId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0));
-      const rxObj = SAMPLE_PRESCRIPTIONS_POOL[idx % SAMPLE_PRESCRIPTIONS_POOL.length];
-      const docRef = await addDoc(collection(db, 'prescriptions'), {
-        patient_id: patientId,
-        patient_name: patient.name,
-        patient_code: patient.code || '#VET-000',
-        species: `${patient.species} (${patient.breed || ''})`,
-        owner_name: patient.owner_name,
-        doctor_name: patient.doctor_name || 'Dr. Sarah Jenkins',
-        prescription_number: `RX-2025-${String(Math.floor(Math.random() * 900) + 100).padStart(4, '0')}`,
-        date: patient.last_visit || 'Hari ini',
-        duration: rxObj.duration,
-        status: rxObj.status,
-        notes: rxObj.notes,
-        items: rxObj.items,
-        created_at: serverTimestamp()
-      });
-
-      for (const item of rxObj.items) {
-        await addDoc(collection(db, 'medications'), {
-          patient_id: patientId,
-          prescription_id: docRef.id,
-          name: item.med_name,
-          dose: item.dosage,
-          created_at: serverTimestamp()
-        });
-      }
-    }
-
-    const vacSnap = await getDocs(query(collection(db, 'vaccinations'), where('patient_id', '==', patientId)));
-    if (vacSnap.empty) {
-      const idx = Math.abs(patientId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0));
-      const vacSet = SAMPLE_VACCINES_POOL[idx % SAMPLE_VACCINES_POOL.length];
-      for (const v of vacSet) {
-        await addDoc(collection(db, 'vaccinations'), {
-          patient_id: patientId,
-          vaccine_name: v.vaccine_name,
-          vaccine_type: v.vaccine_type,
-          given_date: v.given_date,
-          due_date: v.due_date,
-          status: v.status,
-          notes: v.notes,
-          created_at: serverTimestamp()
-        });
-      }
     }
   } catch (err) {
     console.error('Error auto seeding patient records:', err);

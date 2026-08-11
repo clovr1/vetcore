@@ -120,7 +120,9 @@
 
                         <div>
                             <label class="font-semibold text-slate-700 mb-1.5 block">Breed</label>
-                            <input type="text" id="breed" placeholder="e.g. Golden Retriever, Persian" class="input-field">
+                            <select id="breed" class="input-field">
+                                <option value="">-- Pilih Spesies Terlebih Dahulu --</option>
+                            </select>
                         </div>
 
                         <div>
@@ -135,16 +137,6 @@
                         <div>
                             <label class="font-semibold text-slate-700 mb-1.5 block">Age</label>
                             <input type="text" id="age" placeholder="e.g. 3 Years / 6 Bulan" class="input-field">
-                        </div>
-
-                        <div>
-                            <label class="font-semibold text-slate-700 mb-1.5 block">Initial Status</label>
-                            <select id="status" required class="input-field">
-                                <option value="" disabled selected>-- Pilih Status --</option>
-                                <option value="Sehat">Sehat</option>
-                                <option value="Pemulihan">Pemulihan</option>
-                                <option value="Perlu Perhatian">Perlu Perhatian</option>
-                            </select>
                         </div>
                     </div>
                 </div>
@@ -205,6 +197,11 @@
                                 <option value="Dr. Amanda">Dr. Amanda (Veterinary Dermatologist)</option>
                                 <option value="Dr. Smith">Dr. Smith (Internal Medicine)</option>
                             </select>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 mb-1.5 block">Jam Kunjungan *</label>
+                            <input type="time" id="visitTime" required class="input-field">
                         </div>
 
                         <div>
